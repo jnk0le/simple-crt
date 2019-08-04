@@ -57,7 +57,7 @@ Reset_Handler:
 
 	//ldr r1, =__itcm_text_start__ // reuse __itcm_isr_vector_table_end__ as __itcm_text_start__
 	//ldr r2, =__itcm_text_init_start__ // reuse __data_init_end__ as __itcm_init_start__
-	// .itcm_code have to be stored right after .data in flash
+	// .itcm_text have to be stored right after .data in flash
 	ldr r3, =__itcm_text_end__
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Linker script for STM32H7x3xI chips                                       *
+ * Minimal linker script for STM32H743                                       *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *
@@ -57,21 +57,20 @@ __d3_start__ = ORIGIN(SRAM_D3);
 __d3_size__ = LENGTH(SRAM_D3);
 __d3_end__ = __d3_start__ + __d3_size__;
 
-/* unused - stack doesn't have its own section yet */
 __min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 1024;
 __main_stack_end__ =  __dtcm_end__;
 
 __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 
 SECTIONS
-{	
-	.isr_vector_table : {
+{
+	.isr_vector_table : ALIGN(4) {
 		PROVIDE(__isr_vector_table_start__ = .);
 		KEEP(*(.isr_vector_table));
-		. = ALIGN(8); /* will copy it by 8 bytes per loop */
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__isr_vector_table_end__ = .);
 	} > FLASH
-
+	
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
@@ -83,8 +82,8 @@ SECTIONS
 		
 		PROVIDE(__text_end__ = .);
 	} > FLASH
-		
-	.rodata : ALIGN(8) {
+	
+	.rodata : ALIGN(4) {
 		*(.rodata .rodata* .gnu.linkonce.r*);
 	} > FLASH
 	
@@ -107,14 +106,11 @@ SECTIONS
 		*(.ARM.exidx* .gnu.linkonce.armexidx*)
 		*(.eh_frame*)
 	} > FLASH
-
+	
 	.data : ALIGN(4) {
 		PROVIDE(__data_start__ = .);
 		*(.data .data* .gnu.linkonce.d*)
-		
-		. = ALIGN(4);
-		*(.data.text .data.text*) /*should not be used here*/
-		. = ALIGN(8); /* will copy it by 8 bytes per loop */
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__data_end__ = .);
 	} > DTCM AT > FLASH
 	
@@ -124,7 +120,7 @@ SECTIONS
 		PROVIDE(__bss_start__ = .);
 		*(.bss .bss* .gnu.linkonce.b*)
 		*(COMMON)
-		. = ALIGN(8); /* we will clear it by 8 bytes per round */
+		. = ALIGN(8); /* will clear it by 8 bytes per round */
 		PROVIDE(__bss_end__ = .);
 	} > DTCM
 	
@@ -134,35 +130,37 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > DTCM
 	
-	.stack_check (NOLOAD) : ALIGN(8) {
+	.stack_check (NOLOAD) : {
+		/*. = . + __min_heap_size__;*/
 		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > DTCM
 	
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */
-	.itcm_isr_vectors : {
+	.itcm_isr_vectors : ALIGN(4) {
 		PROVIDE(__itcm_isr_vector_table_start__ = .);
 		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_isr_vector_table_end__ = .);
 	} > ITCM
 	
-	.itcm_text : ALIGN(8) {
+	.itcm_text : ALIGN(4) {
 		PROVIDE(__itcm_text_start__ = .);
 		*(.itcm.text .itcm.text*)
-		. = ALIGN(8); /* we will copy it by 8 bytes per loop */
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_text_end__ = .);
 	} > ITCM AT > FLASH
 	
 	PROVIDE(__itcm_text_init_start__ = LOADADDR(.itcm_text));
 	
-	.D1_noinit (NOLOAD) : {
+	.D1_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d1_noinit_start__ = .);
 		*(.D1.noinit .D1.noinit*)
 		PROVIDE(__d1_noinit_end__ = .);
 	} > SRAM_D1
 	
-	.heap_check (NOLOAD) : ALIGN(8) {
+	.heap_check (NOLOAD) : {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
 		. = ALIGN(8);
@@ -170,19 +168,19 @@ SECTIONS
 	
 	__heap_end__ = __d1_end__;
 	
-	.D2_noinit (NOLOAD) : {
+	.D2_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d2_noinit_start__ = .);
 		*(.D2.noinit .D2.noinit*)
 		PROVIDE(__d2_noinit_end__ = .);
 	} > SRAM_D2
 	
-	.D3_noinit (NOLOAD) : {
+	.D3_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d3_noinit_start__ = .);
 		*(.D3.noinit .D3.noinit*)
 		PROVIDE(__d3_noinit_end__ = .);
 	} > SRAM_D3
 	
-	.bkp_noinit (NOLOAD) : {
+	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__bkp_noinit_start__ = .);
 		*(.bkp.noinit .bkp.noinit*)
 		PROVIDE(__bkp_noinit_end__ = .);

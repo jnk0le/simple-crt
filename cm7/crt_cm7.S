@@ -1,5 +1,5 @@
 /*****************************************************************************
- * STM32 minimum startup code including initialization of .ccm.data section  *
+ * cortex-m7 minimum startup code                                            *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *
@@ -44,8 +44,7 @@ Reset_Handler:
 2:	cmp r3, r4
 	bne 1b
 
-	ldr r1, =__itcm_start__ // or __itcm_isr_vector_table_start__
-	// .itcm_isr_vectors have to be placed at the beginning of itcm memory
+	ldr r1, =__itcm_isr_vector_table_start__
 	ldr r3, =__isr_vector_table_start__
 	ldr r4, =__isr_vector_table_end__
 

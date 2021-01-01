@@ -2,10 +2,6 @@
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 
-#ifdef __cplusplus
-	extern "C" {
-#endif
-
 	extern void (*__preinit_array_start[]) (void);
 	extern void (*__preinit_array_end[]) (void);
 	extern void (*__init_array_start[]) (void);
@@ -16,8 +12,8 @@
 	//extern void _init();
 	//extern void _fini();
 
-	void __run_init_array (void);
-	void __run_init_array (void)
+	void __run_init_array(void);
+	void __run_init_array(void)
 	{
 		int count, i;
 
@@ -32,8 +28,8 @@
 			__init_array_start[i]();
 	}
 
-	void __run_fini_array (void);
-	void __run_fini_array (void)
+	void __run_fini_array(void);
+	void __run_fini_array(void)
 	{
 		int count, i;
 
@@ -43,9 +39,5 @@
 
 		//_fini();
 	}
-
-#ifdef __cplusplus
-	}
-#endif
 
 #endif // __CRT_NO_STATIC_INITIALIZERS

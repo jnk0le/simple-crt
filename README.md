@@ -33,7 +33,7 @@ To use semihosting, it must be enabled in gdb by `monitor arm semihosting enable
 or "enable arm semihosting" option in eclipse debug startup configuration
 
 Newlib implementation of `printf("")` is caching output until '\n' character (or buffer exahaustion ??? allocates 1kB through malloc)
-fprintf(stderr,"") is printing out one character at a time which is extremly slow through semihosting.
+`fprintf(stderr,"")` is printing out one character at a time which is extremly slow through semihosting.
 
 stdio.h assumes hardcoded stdin/stdout/stderr handlers to 0,1,2 but obtaining it through proper way by 
 opening special ":tt" file assigns a bigger numbers. For me both ways work.

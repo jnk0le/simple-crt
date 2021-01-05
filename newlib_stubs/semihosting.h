@@ -31,7 +31,6 @@
 		SEMIHOSTING_ReportException = 0x18,
 		SEMIHOSTING_SYS_ELAPSED = 0x30,
 		SEMIHOSTING_SYS_TICKFREQ = 0x31,
-
 	};
 
 	// stdin / stdout / stderr
@@ -58,7 +57,8 @@
 	void semihost_putc(char c);
 	void semihost_puts(const char* buff);
 
-	int semihost_write(int file, const char* buff, int len);
+	int semihost_write(int file, const char* buff, int len); // return number of bytes written or error code
+	int semihost_read(int file, const char* buff, int len); // return number of bytes read or error code
 
 	int semihost_open_special(int mode);
 

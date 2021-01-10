@@ -9,7 +9,7 @@ for use with
 `--specs=nosys.specs`
 
 `-nostdlib`/`-nodefaultlibs` is not required. Bloat will be pulled only when appropriate "standard" function is used. 
-(adding compiler option to use float with newlib printf/scanf can casue bloat even when printf/scanf is not used)
+(adding compiler option to use float with newlib printf/scanf will casue bloat even when printf/scanf is not used)
 
 Device headers can be ripped from e.g. vendor generators or CMSIS packs in eclispe iot.
 
@@ -22,6 +22,7 @@ To define different stack/heap limitations
 To disable c++ static initializers (and premature out 96 bytes)
 `__CRT_NO_STATIC_INITIALIZERS` have to be globally defined through
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
+`__CRT_NORETURN_FROM_MAIN` will remove deinitializers.
 
 Virgin openocd+gdb doesn't support live variable view and SWO/ITM.
 

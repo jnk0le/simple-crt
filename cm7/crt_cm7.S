@@ -73,7 +73,7 @@ Reset_Handler:
 
 	bl main
 
-#ifndef __CRT_NO_STATIC_INITIALIZERS
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)&&!defined(__CRT_NORETURN_FROM_MAIN)
 	//bl __libc_fini_array
 	bl __run_fini_array
 #endif

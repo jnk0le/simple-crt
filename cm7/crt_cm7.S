@@ -27,7 +27,6 @@ crtcpy_entry:
 	bne crtcpy_loop
 	bx lr
 
-.thumb_func
 .global Reset_Handler
 Reset_Handler:
 

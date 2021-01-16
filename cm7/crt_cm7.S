@@ -30,6 +30,7 @@ crtcpy_entry:
 .thumb_func
 .global Reset_Handler
 Reset_Handler:
+
 #if defined (__VFP_FP__) && !defined(__SOFTFP__)
 	// SCB->CPACR |= (3UL << 20) | (3UL << 22);
 	ldr r1, =0xE000ED88 // Load CPACR addr

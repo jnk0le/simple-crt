@@ -138,7 +138,7 @@ SECTIONS
 	
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */
-	.itcm_isr_vectors : ALIGN(4) {
+	.itcm_isr_vectors (NOLOAD) : ALIGN(4) {
 		PROVIDE(__itcm_isr_vector_table_start__ = .);
 		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
 		. = ALIGN(8); /* will copy it by 8 bytes per round */

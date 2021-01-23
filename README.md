@@ -24,6 +24,11 @@ To disable c++ static initializers (and premature out 96 bytes)
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
 `__CRT_NORETURN_FROM_MAIN` will remove deinitializers.
 
+To properly print sizes of each memory segment (e.g. stm32h7)
+```
+-Wl,--print-memory-usage
+```
+
 Virgin openocd+gdb doesn't support live variable view and SWO/ITM.
 
 ### semihosting

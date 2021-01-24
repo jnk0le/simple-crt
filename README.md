@@ -65,5 +65,5 @@ To redirect default handlers to ":tt" assignments one of the following macros
 ```
 have to be globally defined.
 
-PRINTF_TO_SPECIAL_PATH_TT_STDERR will redirect printf stdout to stderr (red font, but faster)
+`WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDERR` will redirect printf stdout to stderr (red font, but faster)
 

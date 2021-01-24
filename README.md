@@ -20,9 +20,9 @@ To define different stack/heap limitations
 ```
 
 To disable c++ static initializers (and premature out 96 bytes)
-`__CRT_NO_STATIC_INITIALIZERS` have to be globally defined through
+`__CRT_NO_STATIC_INITIALIZERS` have to be globally (or at last within crt files) defined through
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
-`__CRT_NORETURN_FROM_MAIN` will remove deinitializers.
+`__CRT_NORETURN_FROM_MAIN` will remove deinitializers only.
 
 To properly print sizes of each memory segment (e.g. stm32h7)
 ```
@@ -59,11 +59,11 @@ to avoid it:
 
 To redirect default handlers to ":tt" assignments one of the following macros
 ```
-#define WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDOUT
-#define WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDERR
-#define READ_REDIRECT_TO_SPECIAL_PATH_TT_STDIN
+WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDOUT
+WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDERR
+READ_REDIRECT_TO_SPECIAL_PATH_TT_STDIN
 ```
-have to be globally defined.
+have to be globally (or at least within semihosting.h) defined.
 
 `WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDERR` will redirect printf stdout to stderr (red font, but faster)
 

@@ -1,12 +1,14 @@
 # simple crt
-Absolute minimum startup/newlib-stub/semihosting code for use with e.g. eclipse iot (mcu on eclipse).
+Absolute minimum startup/newlib-stub/semihosting code for use with e.g. eclipse iot (mcu on eclipse) /w gcc.
 
 for use with 
 
-`-fno-exceptions` (temporarily)
-`-nostartfiles`
-`--specs=nano.specs`
-`--specs=nosys.specs`
+```
+-fno-exceptions (temporarily)
+-nostartfiles
+--specs=nano.specs
+--specs=nosys.specs
+```
 
 `-nostdlib`/`-nodefaultlibs` is not required. Bloat will be pulled only when appropriate "standard" function is used. 
 (adding compiler option to use float with newlib printf/scanf will casue bloat even when printf/scanf is not used)

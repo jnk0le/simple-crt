@@ -1,5 +1,5 @@
 /*****************************************************************************
- * cortex-m7 minimum startup code                                            *
+ * cortex-m7 minimum startup code including itcm initialization              *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *

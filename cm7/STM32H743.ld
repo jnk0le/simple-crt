@@ -64,7 +64,7 @@ __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 
 SECTIONS
 {
-	.isr_vector_table : ALIGN(4) {
+	.isr_vector_table : ALIGN(8) {
 		PROVIDE(__isr_vector_table_start__ = .);
 		KEEP(*(.isr_vector_table));
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
@@ -107,7 +107,7 @@ SECTIONS
 		*(.eh_frame*)
 	} > FLASH
 	
-	.data : ALIGN(4) {
+	.data : ALIGN(8) {
 		PROVIDE(__data_start__ = .);
 		*(.data .data* .gnu.linkonce.d*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
@@ -116,7 +116,7 @@ SECTIONS
 	
 	PROVIDE(__data_init_start__ = LOADADDR(.data));
 	
-	.bss : ALIGN(4) {
+	.bss : ALIGN(8) {
 		PROVIDE(__bss_start__ = .);
 		*(.bss .bss* .gnu.linkonce.b*)
 		*(COMMON)
@@ -138,14 +138,14 @@ SECTIONS
 	
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */
-	.itcm_isr_vectors (NOLOAD) : ALIGN(4) {
+	.itcm_isr_vectors (NOLOAD) : ALIGN(8) {
 		PROVIDE(__itcm_isr_vector_table_start__ = .);
 		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_isr_vector_table_end__ = .);
 	} > ITCM
 	
-	.itcm_text : ALIGN(4) {
+	.itcm_text : ALIGN(8) {
 		PROVIDE(__itcm_text_start__ = .);
 		*(.itcm.text .itcm.text*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */

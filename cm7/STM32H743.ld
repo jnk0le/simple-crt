@@ -58,8 +58,6 @@ __d3_size__ = LENGTH(SRAM_D3);
 __d3_end__ = __d3_start__ + __d3_size__;
 
 __min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 1024;
-__main_stack_end__ =  __dtcm_end__;
-
 __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 
 SECTIONS
@@ -135,6 +133,8 @@ SECTIONS
 		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > DTCM
+	
+	__main_stack_end__ =  __dtcm_end__;
 	
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */

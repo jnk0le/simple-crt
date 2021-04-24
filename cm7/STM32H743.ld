@@ -160,10 +160,9 @@ SECTIONS
 		PROVIDE(__d1_noinit_end__ = .);
 	} > SRAM_D1
 	
-	.heap_check (NOLOAD) : {
+	.heap_check (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
-		. = ALIGN(8);
 	} > SRAM_D1
 	
 	__heap_end__ = __d1_end__;

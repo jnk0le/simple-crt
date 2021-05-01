@@ -13,18 +13,19 @@ for use with
 `-nostdlib`/`-nodefaultlibs` is not required. Bloat will be pulled only when appropriate "standard" function is used. 
 (adding compiler option to use float with newlib printf/scanf will casue bloat even when printf/scanf is not used)
 
-Device headers can be ripped from e.g. vendor generators or CMSIS packs in eclispe iot.
+Device headers can be ripped from e.g. vendor generators or CMSIS packs available to download in eclispe iot.
 
 To define different stack/heap limitations
 ```
 -Wl,--defsym,__min_stack_size__=1024
 -Wl,--defsym,__min_heap_size__=4096
 ```
+note that space "reserved" for stack/heap is counted as used by variables.
 
 To disable c++ static initializers (and premature out 96 bytes)
 `__CRT_NO_STATIC_INITIALIZERS` have to be globally (or at last within crt files) defined through
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
-`__CRT_NORETURN_FROM_MAIN` will remove deinitializers only.
+`__CRT_NORETURN_FROM_MAIN` will remove deinitializers only. (crashbranch remains)
 
 To properly print sizes of each memory segment (e.g. stm32h7)
 ```

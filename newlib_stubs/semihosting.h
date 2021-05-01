@@ -38,8 +38,8 @@
 	#define SEMIHOSTING_FOPEN_MODE_W 4
 	#define SEMIHOSTING_FOPEN_MODE_A 8
 
-	inline int call_host(int reason, void* param);
-	inline int call_host(int reason, void* param)
+	static inline int call_host(int reason, void* param);
+	static inline int call_host(int reason, void* param)
 	{
 		register long result asm("r0") = reason;
 		register void* r1 asm("r1") = param;

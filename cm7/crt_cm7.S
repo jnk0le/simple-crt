@@ -57,7 +57,7 @@ Reset_Handler:
 2:	cmp r3, r4
 	bne 1b
 
-	mov r8, r2 // cache data source, saves 4bytes
+	mov r8, r2 // cache data source, saves 2+2bytes
 
 	ldr r2, =__isr_vector_table_start__
 	ldr r3, =__itcm_isr_vector_table_start__

@@ -169,7 +169,6 @@
 		SPI1_IRQHandler,
 		0,
 		USART1_IRQHandler,
-		0,
 	#elif defined(STM32F030x8)
 		WWDG_IRQHandler,
 		0,

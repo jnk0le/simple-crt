@@ -13,12 +13,12 @@
 .global vectors // consistent with c version, should not compile if xxx_vectors.c gets also pulled in
 vectors:
 
-.long __main_stack_end__
-.long Reset_Handler
-.long NMI_Handler
-.long HardFault_Handler
+	.long __main_stack_end__
+	.long Reset_Handler
+	.long NMI_Handler
+	.long HardFault_Handler
 
-// 28 bytes available here
+	// 28 bytes available here
 
 1:	ldmia r2!, {r0}
 	stmia r3!, {r0}
@@ -50,9 +50,9 @@ vectors:
 	b .
 	nop // padding
 
-.long SVC_Handler
+	.long SVC_Handler
 
-// 8 bytes available here
+	// 8 bytes available here
 .thumb_func
 .global Reset_Handler
 
@@ -62,62 +62,62 @@ Reset_Handler:
 	ldr r4, data_end
 	b 2b // branch to cmp first and escape from scattered space
 
-.long PendSV_Handler
-.long SysTick_Handler
+	.long PendSV_Handler
+	.long SysTick_Handler
 
-//device irq's
+	//device irq's
 
-.long WWDG_IRQHandler
+	.long WWDG_IRQHandler
 
-// 4 bytes available here
+	// 4 bytes available here
 data_init_start: .long __data_init_start__
 
-.long RTC_IRQHandler
-.long FLASH_IRQHandler
-.long RCC_IRQHandler
-.long EXTI0_1_IRQHandler
-.long EXTI2_3_IRQHandler
-.long EXTI4_15_IRQHandler
+	.long RTC_IRQHandler
+	.long FLASH_IRQHandler
+	.long RCC_IRQHandler
+	.long EXTI0_1_IRQHandler
+	.long EXTI2_3_IRQHandler
+	.long EXTI4_15_IRQHandler
 
-// 4 bytes available here
+	// 4 bytes available here
 data_start: .long __data_start__
 
-.long DMA1_Channel1_IRQHandler
-.long DMA1_Channel2_3_IRQHandler
-.long DMA1_Channel4_5_IRQHandler
-.long ADC1_IRQHandler
-.long TIM1_BRK_UP_TRG_COM_IRQHandler
-.long TIM1_CC_IRQHandler
+	.long DMA1_Channel1_IRQHandler
+	.long DMA1_Channel2_3_IRQHandler
+	.long DMA1_Channel4_5_IRQHandler
+	.long ADC1_IRQHandler
+	.long TIM1_BRK_UP_TRG_COM_IRQHandler
+	.long TIM1_CC_IRQHandler
 
-// 4 bytes available here
+	// 4 bytes available here
 data_end: .long __data_end__
 
-.long TIM3_IRQHandler
+	.long TIM3_IRQHandler
 
-// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
+	// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
 
 4:	stmia r3!, {r0}
 5:	cmp r3, r4
 	bne 4b
 	b 6b
 
-.long TIM14_IRQHandler
+	.long TIM14_IRQHandler
 
-// 4 bytes available here // TIM15_IRQHandler on x8
+	// 4 bytes available here // TIM15_IRQHandler on x8
 
 3:	movs r0, #0
 	b 5b // branch to cmp first and escape from scattered space
 
-.long TIM16_IRQHandler
-.long TIM17_IRQHandler
-.long I2C1_IRQHandler
+	.long TIM16_IRQHandler
+	.long TIM17_IRQHandler
+	.long I2C1_IRQHandler
 
-// 4 bytes available here // I2C2_IRQHandler on x8
+	// 4 bytes available here // I2C2_IRQHandler on x8
 bss_end: .long __bss_end__
 
-.long SPI1_IRQHandler
+	.long SPI1_IRQHandler
 
-// 4 bytes available here // SPI2_IRQHandler on x8
+	// 4 bytes available here // SPI2_IRQHandler on x8
 
 .thumb_func
 Default_Handler:
@@ -129,11 +129,11 @@ Default_Handler:
 	nop // padding
 #endif
 
-.long USART1_IRQHandler
-// USART2_IRQHandler on x8
-// USART3_6_IRQHandler on xC
+	.long USART1_IRQHandler
+	// USART2_IRQHandler on x8
+	// USART3_6_IRQHandler on xC
 
-// weak assignments to Default_Handler
+	// weak assignments to Default_Handler
 
 	.weak      NMI_Handler
 	.thumb_set NMI_Handler,Default_Handler

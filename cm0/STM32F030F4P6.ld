@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Minimal linker script for STM32F030F4                                     *
+ * Minimal linker script for STM32F030x4                                     *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *

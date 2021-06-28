@@ -122,12 +122,11 @@ bss_end: .long __bss_end__
 .thumb_func
 Default_Handler:
 #if defined(DEBUG)
-9:	bkpt #0
-	b 9b
+	bkpt #0
 #else
-	b .
 	nop // padding
 #endif
+	b Default_Handler
 
 	.long USART1_IRQHandler
 	// USART2_IRQHandler on x8

@@ -11,11 +11,12 @@
 .text
 .thumb_func
 .global Reset_Handler
+.align 2
 
+	nop // alignment for literal table, align both loops entry to 4 bytes
 Reset_Handler:
-	ldr r2, =__data_init_start__
-	ldr r3, =__data_start__
-	ldr r4, =__data_end__
+	adr r0, mem_init_symbols
+	ldmia r0!, {r2,r3,r4,r5}
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
 1:	ldmia r2!, {r0}
@@ -24,13 +25,13 @@ Reset_Handler:
 	bne 1b // go forward if r2 is equal to r3
 
 	movs r0, #0
-	//ldr r3, =__bss_start__ // reuse __data_end__ in r2 as __bss_start__
+
+	// reuse __data_end__ in r3 as __bss_start__
 	// .bss have to be placed right after the .data section
-	ldr r4, =__bss_end__
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
 1:	stmia r3!, {r0}
-2:	cmp r3, r4
+2:	cmp r3, r5
 	bne 1b
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
@@ -47,3 +48,9 @@ Reset_Handler:
 #endif
 
 	b .
+
+mem_init_symbols:
+	.long __data_init_start__ // r2
+	.long __data_start__ // r3
+	.long __data_end__ // r4
+	.long __bss_end__ // r5

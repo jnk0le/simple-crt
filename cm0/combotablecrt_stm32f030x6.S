@@ -27,7 +27,7 @@ vectors:
 
 	//ldr r3, =__bss_start__ // reuse __data_end__ in r2 as __bss_start__
 	// .bss have to be placed right after the .data section
-	ldr r4, bss_end
+	ldr r5, bss_end
 	b 3f // zeroing
 
 6: // bl are 4byte
@@ -97,7 +97,7 @@ data_end: .long __data_end__
 	// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
 
 4:	stmia r3!, {r0}
-5:	cmp r3, r4
+5:	cmp r3, r5
 	bne 4b
 	b 6b
 

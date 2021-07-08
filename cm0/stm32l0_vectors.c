@@ -21,13 +21,6 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) PendSV_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) SysTick_Handler(void);
 
-#if defined(__ARM_ARCH_7M__)||defined(__ARM_ARCH_7EM__)
-	void __attribute__ ((weak, alias("Default_Handler"))) MemManage_Handler(void);
-	void __attribute__ ((weak, alias("Default_Handler"))) BusFault_Handler(void);
-	void __attribute__ ((weak, alias("Default_Handler"))) UsageFault_Handler(void);
-	void __attribute__ ((weak, alias("Default_Handler"))) DebugMon_Handler(void);
-#endif
-
 #if defined(STM32L010x4)
 	void __attribute__ ((weak, alias("Default_Handler"))) WWDG_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) RTC_IRQHandler(void);
@@ -123,30 +116,20 @@
 		Reset_Handler,
 		NMI_Handler,
 		HardFault_Handler,
-	#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-		MemManage_Handler,
-		BusFault_Handler,
-		UsageFault_Handler,
-	#else
 		0,
 		0,
 		0,
-	#endif
 		0,
 		0,
 		0,
 		0,
 		SVC_Handler,
-	#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-		DebugMon_Handler,
-	#else
 		0,
-	#endif
 		0,
 		PendSV_Handler,
 		SysTick_Handler,
 
-#if defined(STM32L010x4)
+	#if defined(STM32L010x4)
 		WWDG_IRQHandler,
 		0,
 		RTC_IRQHandler,
@@ -177,7 +160,7 @@
 		0,
 		USART2_IRQHandler,
 		LPUART1_IRQHandler,
-#elif defined(STM32L010x6)||defined(STM32L010x8)
+	#elif defined(STM32L010x6)||defined(STM32L010x8)
 		WWDG_IRQHandler,
 		0,
 		RTC_IRQHandler,
@@ -208,7 +191,7 @@
 		0,
 		USART2_IRQHandler,
 		LPUART1_IRQHandler,
-#elif defined(STM32L010xB)
+	#elif defined(STM32L010xB)
 		WWDG_IRQHandler,
 		0,
 		RTC_IRQHandler,
@@ -239,7 +222,7 @@
 		0,
 		USART2_IRQHandler,
 		LPUART1_IRQHandler,
-#elif defined(STM32L011xx)
+	#elif defined(STM32L011xx)
 		WWDG_IRQHandler,
 		PVD_IRQHandler,
 		RTC_IRQHandler,
@@ -270,7 +253,10 @@
 		0,
 		USART2_IRQHandler,
 		LPUART1_IRQHandler,
-#else
-	#error "unsupported or unknown MCU"
-#endif
+	#else
+		#error "unsupported or unknown MCU"
+	#endif
 
+#if !defined(__ARM_ARCH_6M__)
+	#error "wrong architecture"
+#endif

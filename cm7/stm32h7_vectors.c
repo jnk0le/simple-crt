@@ -20,13 +20,12 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) SVC_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) PendSV_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) SysTick_Handler(void);
-
-#if defined(__ARM_ARCH_7M__)||defined(__ARM_ARCH_7EM__)
+	
 	void __attribute__ ((weak, alias("Default_Handler"))) MemManage_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) BusFault_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) UsageFault_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DebugMon_Handler(void);
-#endif
+
 
 #if defined(STM32H743xx)
 	void __attribute__ ((weak, alias("Default_Handler"))) WWDG_IRQHandler(void);
@@ -179,25 +178,15 @@
 		Reset_Handler,
 		NMI_Handler,
 		HardFault_Handler,
-	#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
 		MemManage_Handler,
 		BusFault_Handler,
 		UsageFault_Handler,
-	#else
-		0,
-		0,
-		0,
-	#endif
 		0,
 		0,
 		0,
 		0,
 		SVC_Handler,
-	#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
 		DebugMon_Handler,
-	#else
-		0,
-	#endif
 		0,
 		PendSV_Handler,
 		SysTick_Handler,
@@ -357,3 +346,7 @@
 		#error "unsupported or unknown MCU"
 	#endif
 	};
+	
+#if !defined(__ARM_ARCH_7EM__)
+	#error "wrong architecture"
+#endif

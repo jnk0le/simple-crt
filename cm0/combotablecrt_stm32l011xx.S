@@ -19,14 +19,13 @@ vectors:
 	.long HardFault_Handler
 	
 	// 28 bytes available here
-		
 1:	ldmia r2!, {r0}
 	stmia r3!, {r0}
 2:	cmp r3, r4
-	bne 1b // go forward if r2 is equal to r3
+	bne 1b
 	
 	movs r0, #0
-	b 4f
+	b 4f // branch to cmp first and escape from scattered space
 	
 5: // bl are 4byte
 #ifndef __CRT_NO_STATIC_INITIALIZERS
@@ -34,15 +33,15 @@ vectors:
 	bl main
 #else
 	bl main // just call main faster
-	nop //padding
-	nop //padding
+	nop // padding
+	nop // padding
 #endif
 
 #if !defined(__CRT_NO_STATIC_INITIALIZERS)&&!defined(__CRT_NORETURN_FROM_MAIN)
 	bl __run_fini_array
 #else
-	nop //padding
-	nop //padding
+	nop // padding
+	nop // padding
 #endif
 
 	b .
@@ -57,13 +56,13 @@ vectors:
 Reset_Handler:
 	adr r0, mem_init_symbols
 	ldmia r0!, {r2,r3,r4,r5}
-	b 2b
-	nop
+	b 2b // branch to cmp first and escape from scattered space
+	nop // padding
 
 	.long PendSV_Handler
 	.long SysTick_Handler
 	
-	//device irq's
+	// device irq's
 
 	.long WWDG_IRQHandler
 	.long PVD_IRQHandler

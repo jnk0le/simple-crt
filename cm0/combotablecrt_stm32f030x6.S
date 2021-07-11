@@ -19,13 +19,12 @@ vectors:
 	.long HardFault_Handler
 
 	// 28 bytes available here
-
 1:	ldmia r2!, {r0}
 	stmia r3!, {r0}
 2:	cmp r3, r4
-	bne 1b // go forward if r2 is equal to r3
+	bne 1b
 
-	//ldr r3, =__bss_start__ // reuse __data_end__ in r2 as __bss_start__
+	// ldr r3, =__bss_start__ // reuse __data_end__ in r2 as __bss_start__
 	// .bss have to be placed right after the .data section
 	ldr r5, bss_end
 	b 3f // zeroing
@@ -36,15 +35,15 @@ vectors:
 	bl main
 #else
 	bl main // just call main faster
-	nop //padding
-	nop //padding
+	nop // padding
+	nop // padding
 #endif
 
 #if !defined(__CRT_NO_STATIC_INITIALIZERS)&&!defined(__CRT_NORETURN_FROM_MAIN)
 	bl __run_fini_array
 #else
-	nop //padding
-	nop //padding
+	nop // padding
+	nop // padding
 #endif
 
 	b .
@@ -65,12 +64,13 @@ Reset_Handler:
 	.long PendSV_Handler
 	.long SysTick_Handler
 
-	//device irq's
+	// device irq's
 
 	.long WWDG_IRQHandler
 
 	// 4 bytes available here
-data_init_start: .long __data_init_start__
+data_init_start: 
+	.long __data_init_start__
 
 	.long RTC_IRQHandler
 	.long FLASH_IRQHandler
@@ -80,7 +80,8 @@ data_init_start: .long __data_init_start__
 	.long EXTI4_15_IRQHandler
 
 	// 4 bytes available here
-data_start: .long __data_start__
+data_start: 
+	.long __data_start__
 
 	.long DMA1_Channel1_IRQHandler
 	.long DMA1_Channel2_3_IRQHandler
@@ -90,12 +91,12 @@ data_start: .long __data_start__
 	.long TIM1_CC_IRQHandler
 
 	// 4 bytes available here
-data_end: .long __data_end__
+data_end: 
+	.long __data_end__
 
 	.long TIM3_IRQHandler
 
 	// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
-
 4:	stmia r3!, {r0}
 5:	cmp r3, r5
 	bne 4b
@@ -104,7 +105,6 @@ data_end: .long __data_end__
 	.long TIM14_IRQHandler
 
 	// 4 bytes available here // TIM15_IRQHandler on x8
-
 3:	movs r0, #0
 	b 5b // branch to cmp first and escape from scattered space
 
@@ -113,7 +113,8 @@ data_end: .long __data_end__
 	.long I2C1_IRQHandler
 
 	// 4 bytes available here // I2C2_IRQHandler on x8
-bss_end: .long __bss_end__
+bss_end: 
+	.long __bss_end__
 
 	.long SPI1_IRQHandler
 

@@ -13,7 +13,7 @@
 .global Reset_Handler
 .align 2
 
-	nop // alignment for literal table, align both loops entry to 4 bytes
+	nop // padding for literal table, align both loops entry to 4 bytes
 Reset_Handler:
 	adr r0, mem_init_symbols
 	ldmia r0!, {r2,r3,r4,r5}
@@ -22,7 +22,7 @@ Reset_Handler:
 1:	ldmia r2!, {r0}
 	stmia r3!, {r0}
 2:	cmp r3, r4
-	bne 1b // go forward if r2 is equal to r3
+	bne 1b
 
 	movs r0, #0
 

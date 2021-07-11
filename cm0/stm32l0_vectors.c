@@ -51,7 +51,7 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) EXTI4_15_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel2_3_IRQHandler(void);
-	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_7_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_5_6_7_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) ADC1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) LPTIM1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) TIM2_IRQHandler(void);
@@ -71,7 +71,7 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) EXTI4_15_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel2_3_IRQHandler(void);
-	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_7_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_5_6_7_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) ADC1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) LPTIM1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) TIM2_IRQHandler(void);

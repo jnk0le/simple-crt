@@ -97,6 +97,61 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) USART1_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) USART2_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) USART3_6_IRQHandler(void);
+
+#elif defined(STM32F070x6)
+	void __attribute__ ((weak, alias("Default_Handler"))) WWDG_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) RTC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) FLASH_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) RCC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI0_1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI2_3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI4_15_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel1_IRQHandler,
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel2_3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_5_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) ADC1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM1_BRK_UP_TRG_COM_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM1_CC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM14_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM16_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM17_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) I2C1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) SPI1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USART1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USART2_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USB_IRQHandler(void);
+	
+#elif defined(STM32F070xB)
+	void __attribute__ ((weak, alias("Default_Handler"))) WWDG_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) RTC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) FLASH_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) RCC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI0_1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI2_3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) EXTI4_15_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel2_3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel4_5_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) ADC1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM1_BRK_UP_TRG_COM_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM1_CC_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM3_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM6_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM7_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM14_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM15_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM16_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) TIM17_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) I2C1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) I2C2_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) SPI1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) SPI2_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USART1_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USART2_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USART3_4_IRQHandler(void);
+	void __attribute__ ((weak, alias("Default_Handler"))) USB_IRQHandler(void);
+		
 #else
 	#error "unsupported or unknown MCU"
 #endif
@@ -213,6 +268,72 @@
 		USART1_IRQHandler,
 		USART2_IRQHandler,
 		USART3_6_IRQHandler,
+	#elif defined(STM32F070x6)
+		WWDG_IRQHandler,
+		0,
+		RTC_IRQHandler,
+		FLASH_IRQHandler,
+		RCC_IRQHandler,
+		EXTI0_1_IRQHandler,
+		EXTI2_3_IRQHandler,
+		EXTI4_15_IRQHandler,
+		0,
+		DMA1_Channel1_IRQHandler,
+		DMA1_Channel2_3_IRQHandler,
+		DMA1_Channel4_5_IRQHandler,
+		ADC1_IRQHandler,
+		TIM1_BRK_UP_TRG_COM_IRQHandler,
+		TIM1_CC_IRQHandler,
+		0,
+		TIM3_IRQHandler,
+		0,
+		0,
+		TIM14_IRQHandler,
+		0,
+		TIM16_IRQHandler,
+		TIM17_IRQHandler,
+		I2C1_IRQHandler,
+		0,
+		SPI1_IRQHandler,
+		0,
+		USART1_IRQHandler,
+		USART2_IRQHandler,
+		0,
+		0,
+		USB_IRQHandler,
+	#elif defined(STM32F070xB)
+		WWDG_IRQHandler,
+		0,
+		RTC_IRQHandler,
+		FLASH_IRQHandler,
+		RCC_IRQHandler,
+		EXTI0_1_IRQHandler,
+		EXTI2_3_IRQHandler,
+		EXTI4_15_IRQHandler,
+		0,
+		DMA1_Channel1_IRQHandler,
+		DMA1_Channel2_3_IRQHandler,
+		DMA1_Channel4_5_IRQHandler,
+		ADC1_IRQHandler,
+		TIM1_BRK_UP_TRG_COM_IRQHandler,
+		TIM1_CC_IRQHandler,
+		0,
+		TIM3_IRQHandler,
+		TIM6_IRQHandler,
+		TIM7_IRQHandler,
+		TIM14_IRQHandler,
+		TIM15_IRQHandler,
+		TIM16_IRQHandler,
+		TIM17_IRQHandler,
+		I2C1_IRQHandler,
+		I2C2_IRQHandler,
+		SPI1_IRQHandler,
+		SPI2_IRQHandler,
+		USART1_IRQHandler,
+		USART2_IRQHandler,
+		USART3_4_IRQHandler,
+		0,
+		USB_IRQHandler,
 	#else
 		#error "unsupported or unknown MCU"
 	#endif

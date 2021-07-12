@@ -17,16 +17,16 @@ vectors:
 	.long Reset_Handler
 	.long NMI_Handler
 	.long HardFault_Handler
-	
+
 	// 28 bytes available here
 1:	ldmia r2!, {r0}
 	stmia r3!, {r0}
 2:	cmp r3, r4
 	bne 1b
-	
+
 	movs r0, #0
 	b 4f // branch to cmp first and escape from scattered space
-	
+
 5: // bl are 4byte
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 	bl __run_init_array
@@ -48,7 +48,7 @@ vectors:
 	nop // padding
 
 	.long SVC_Handler
-	
+
 	// 8 bytes available here
 .thumb_func
 .global Reset_Handler
@@ -61,7 +61,7 @@ Reset_Handler:
 
 	.long PendSV_Handler
 	.long SysTick_Handler
-	
+
 	// device irq's
 
 	.long WWDG_IRQHandler
@@ -80,21 +80,21 @@ Reset_Handler:
 	.long LPTIM1_IRQHandler
 	.long 0
 	.long TIM2_IRQHandler
-	
+
 	// 16 bytes available here
 mem_init_symbols:
 	.long __data_init_start__ // r2
 	.long __data_start__ // r3
 	.long __data_end__ // r4
 	.long __bss_end__ // r5
-	
+
 	.long TIM21_IRQHandler
 	.long 0
-	.long 0 
+	.long 0
 	.long I2C1_IRQHandler
-	
+
 	// 4 bytes available here
-	
+
 .thumb_func
 Default_Handler:
 #if defined(DEBUG)
@@ -103,21 +103,21 @@ Default_Handler:
 	nop // padding
 #endif
 	b Default_Handler
-	
+
 	.long SPI1_IRQHandler
-	
+
 	// 8 bytes available here
-	
+
 3:	stmia r3!, {r0}
 4:	cmp r3, r5
 	bne 1b
 	b 5b
-	
+
 	.long USART2_IRQHandler
 	.long LPUART1_IRQHandler
 
 	// weak assignments to Default_Handler
- 
+
 	.weak      NMI_Handler
 	.thumb_set NMI_Handler,Default_Handler
 

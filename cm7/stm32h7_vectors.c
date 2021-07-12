@@ -347,6 +347,6 @@
 	#endif
 	};
 	
-#if !defined(__ARM_ARCH_7EM__)
+#if !defined(__ARM_ARCH_7EM__)&&!defined(__ARM_ARCH_7M__)
 	#error "wrong architecture"
 #endif

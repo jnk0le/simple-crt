@@ -1,5 +1,5 @@
 /*****************************************************************************
- * STM32F030 vector table definitions                                       *
+ * STM32F0 vector table definitions                                          *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *

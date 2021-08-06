@@ -110,7 +110,7 @@ Default_Handler:
 
 3:	stmia r3!, {r0}
 4:	cmp r3, r5
-	bne 1b
+	bne 3b
 	b 5b
 
 	.long USART2_IRQHandler

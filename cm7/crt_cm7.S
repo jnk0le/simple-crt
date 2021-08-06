@@ -47,14 +47,14 @@ Reset_Handler:
 
 	//ldr r3, =__bss_start__  // reuse __data_end__ as __bss_start__
 	// .bss have to be placed right after the .data section
-	ldr r4, =__bss_end__
+	ldr r5, =__bss_end__
 
 	movs r0, #0
 	movs r1, #0
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
 1:	strd r0,r1, [r3], #8
-2:	cmp r3, r4
+2:	cmp r3, r5
 	bne 1b
 
 	mov r8, r2 // cache data source, saves 2+2bytes

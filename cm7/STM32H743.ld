@@ -73,7 +73,6 @@ SECTIONS
 		PROVIDE(__text_start__ = .);
 		
 		*(.text* .gnu.linkonce.t*);
-		*(.glue_7 .glue_7t);
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))

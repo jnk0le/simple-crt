@@ -26,7 +26,6 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) UsageFault_Handler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) DebugMon_Handler(void);
 
-
 #if defined(STM32H743xx)
 	void __attribute__ ((weak, alias("Default_Handler"))) WWDG_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) PVD_AVD_IRQHandler(void);

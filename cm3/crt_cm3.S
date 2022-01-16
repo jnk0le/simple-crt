@@ -13,16 +13,21 @@
 .global Reset_Handler
 .align 2
 
-	nop // padding for literal table, align both loops entry to 4 bytes
 Reset_Handler:
 	adr r0, mem_init_symbols
-	ldmia r0!, {r2,r3,r4,r5} //ldr not faster?
+	ldmia r0!, {r2,r3,r4,r5}
+
+	// 2 cycles faster but less dense
+	//ldr r2, =__data_init_start__
+	//ldr r3, =__data_start__
+	//ldr r4, =__data_end__
+	//ldr r5, =__bss_end__
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
-1:	//ldr r0, [r2], #4 // ? // or init backwards cbz + subs ? //
-	//str r0, [r3], #4
-	ldmia r2!, {r0}
-	stmia r3!, {r0}
+	nop // padding for literal table, align both loops entry to 4 bytes
+
+1:	ldr r0, [r2], #4
+	str r0, [r3], #4
 2:	cmp r3, r4
 	bne 1b
 
@@ -32,7 +37,7 @@ Reset_Handler:
 	// .bss have to be placed right after the .data section
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
-1:	stmia r3!, {r0}
+1:	str r0, [r3], #4
 2:	cmp r3, r5
 	bne 1b
 

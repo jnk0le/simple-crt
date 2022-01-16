@@ -13,7 +13,6 @@
 .global Reset_Handler
 .align 2
 
-	nop // padding for literal table, align both loops entry to 4 bytes
 Reset_Handler:
 	adr r0, mem_init_symbols
 	ldmia r0!, {r2,r3,r4,r5}
@@ -30,6 +29,8 @@ Reset_Handler:
 	// .bss have to be placed right after the .data section
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
+	nop // padding for literal table, align both loops entry to 4 bytes
+
 1:	stmia r3!, {r0}
 2:	cmp r3, r5
 	bne 1b

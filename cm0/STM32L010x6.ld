@@ -35,7 +35,7 @@ SECTIONS
 		KEEP(*(.isr_vector_table));
 		PROVIDE(__isr_vector_table_end__ = .);
 	} > FLASH
-	
+
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
@@ -46,11 +46,11 @@ SECTIONS
 		
 		PROVIDE(__text_end__ = .);
 	} > FLASH
-	
+
 	.rodata : ALIGN(4) {
 		*(.rodata* .gnu.linkonce.r*);
 	} > FLASH
-	
+
 	.tables : ALIGN(4) {
 		PROVIDE(__preinit_array_start = .);
 		KEEP(*(SORT(.preinit_array*))) 
@@ -80,7 +80,7 @@ SECTIONS
 		*(.data* .gnu.linkonce.d.*)
 		PROVIDE(__data_end__ = .);
 	} > RAM AT > FLASH
-	
+
 	PROVIDE(__data_init_start__ = LOADADDR(.data));
 
 	.bss : ALIGN(4) {
@@ -89,20 +89,20 @@ SECTIONS
 		*(COMMON)		
 		PROVIDE(__bss_end__ = .);
 	} > RAM
-	
+
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
 		*(.noinit*) 
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
-	
+
 	.heapstack_check (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
 		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > RAM
-	
+
 	__heap_end__ = __ram_end__ - __min_stack_size__;
 	__main_stack_end__ =  __ram_end__;
 }

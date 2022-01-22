@@ -19,7 +19,7 @@ MEMORY
 	FLASH_B1 (rx) : ORIGIN = 0x08100000, LENGTH = 1024K*/
 	
 	ITCM (rwx) : ORIGIN = 0x00000000, LENGTH = 64K
-	DTCM (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
+	DTCM (rw) : ORIGIN = 0x20000000, LENGTH = 128K
 	
 	SRAM_D1 (rwx) : ORIGIN = 0x24000000, LENGTH = 512K
 	SRAM_D2 (rwx) : ORIGIN = 0x30000000, LENGTH = 288K
@@ -68,7 +68,7 @@ SECTIONS
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__isr_vector_table_end__ = .);
 	} > FLASH
-	
+
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
@@ -79,11 +79,11 @@ SECTIONS
 		
 		PROVIDE(__text_end__ = .);
 	} > FLASH
-	
+
 	.rodata : ALIGN(4) {
 		*(.rodata* .gnu.linkonce.r*);
 	} > FLASH
-	
+
 	.tables : ALIGN(4) {
 		PROVIDE(__preinit_array_start = .);
 		KEEP(*(SORT(.preinit_array*))) 
@@ -103,16 +103,16 @@ SECTIONS
 		*(.ARM.exidx* .gnu.linkonce.armexidx*)
 		*(.eh_frame*)
 	} > FLASH
-	
+
 	.data : ALIGN(8) {
 		PROVIDE(__data_start__ = .);
 		*(.data* .gnu.linkonce.d*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__data_end__ = .);
 	} > DTCM AT > FLASH
-	
+
 	PROVIDE(__data_init_start__ = LOADADDR(.data));
-	
+
 	.bss : ALIGN(8) {
 		PROVIDE(__bss_start__ = .);
 		*(.bss* .gnu.linkonce.b*)
@@ -120,21 +120,20 @@ SECTIONS
 		. = ALIGN(8); /* will clear it by 8 bytes per round */
 		PROVIDE(__bss_end__ = .);
 	} > DTCM
-	
+
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
 		*(.noinit*) 
 		PROVIDE(__noinit_end__ = .);
 	} > DTCM
-	
+
 	.stack_check (NOLOAD) : {
-		/*. = . + __min_heap_size__;*/
 		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > DTCM
-	
+
 	__main_stack_end__ =  __dtcm_end__;
-	
+
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */
 	.itcm_isr_vectors (NOLOAD) : ALIGN(8) {
@@ -143,45 +142,44 @@ SECTIONS
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_isr_vector_table_end__ = .);
 	} > ITCM
-	
+
 	.itcm_text : ALIGN(8) {
 		PROVIDE(__itcm_text_start__ = .);
 		*(.itcm.text*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_text_end__ = .);
 	} > ITCM AT > FLASH
-	
+
 	PROVIDE(__itcm_text_init_start__ = LOADADDR(.itcm_text));
-	
+
 	.D1_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d1_noinit_start__ = .);
 		*(.D1.noinit*)
 		PROVIDE(__d1_noinit_end__ = .);
 	} > SRAM_D1
-	
+
 	.heap_check (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
 	} > SRAM_D1
-	
+
 	__heap_end__ = __d1_end__;
-	
+
 	.D2_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d2_noinit_start__ = .);
 		*(.D2.noinit*)
 		PROVIDE(__d2_noinit_end__ = .);
 	} > SRAM_D2
-	
+
 	.D3_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d3_noinit_start__ = .);
 		*(.D3.noinit*)
 		PROVIDE(__d3_noinit_end__ = .);
 	} > SRAM_D3
-	
+
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__bkp_noinit_start__ = .);
 		*(.bkp.noinit*)
 		PROVIDE(__bkp_noinit_end__ = .);
 	} > SRAM_BCKUP
-	
 }

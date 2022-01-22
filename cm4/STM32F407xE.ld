@@ -1,10 +1,10 @@
 /*****************************************************************************
- * Minimal linker script for STM32L010x4                                     *
+ * Minimal linker script for STM32F407xE with stack in ccm, data/bss in ram  *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *
  *****************************************************************************/
-
+ 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm");
 OUTPUT_ARCH(arm);
 
@@ -12,9 +12,15 @@ ENTRY(Reset_Handler);
 
 MEMORY
 {
-	FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 16K
-	EEPROM (rx) : ORIGIN = 0x08080000, LENGTH = 128
-	RAM (rwx) : ORIGIN = 0x20000000, LENGTH = 2K
+	FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 512K
+	RAM (rw) : ORIGIN = 0x20000000, LENGTH = 128K /* rwx? */
+	
+	/* RAM is merged from 2 memory regions
+	SRAM1 (rwx) : ORIGIN = 0x20000000, LENGTH = 112K
+	SRAM2 (rw) : ORIGIN = 0x2001C000, LENGTH = 16K*/
+	
+	CCM (rw) : ORIGIN = 0x38000000, LENGTH = 64K
+	SRAM_BCKUP (rw) : ORIGIN = 0x38800000, LENGTH = 4K
 }
 
 __flash_start__ = ORIGIN(FLASH);
@@ -25,8 +31,12 @@ __ram_start__ = ORIGIN(RAM);
 __ram_size__ = LENGTH(RAM);
 __ram_end__ = __ram_start__ + __ram_size__;
 
-__min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 256;
-__min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 0;
+__ccm_start__ = ORIGIN(CCM);
+__ccm_size__ = LENGTH(CCM);
+__ccm_end__ = __ram_start__ + __ram_size__;
+
+__min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 1024;
+__min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 
 SECTIONS
 {
@@ -71,10 +81,6 @@ SECTIONS
 		*(.eh_frame*)
 	} > FLASH
 
-	.eeprom : {
-		*(.eeprom*)
-	} > EEPROM
-
 	.data : ALIGN(4) {
 		PROVIDE(__data_start__ = .);
 		*(.data* .gnu.linkonce.d.*)
@@ -96,13 +102,45 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
-	.heapstack_check (NOLOAD) : ALIGN(4) {
+	.heap_check (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
-		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > RAM
 
-	__heap_end__ = __ram_end__ - __min_stack_size__;
-	__main_stack_end__ =  __ram_end__;
+	__heap_end__ = __ram_end__;
+
+	/*.ccm_data : ALIGN(4) {
+		PROVIDE(__ccm_data_start__ = .);
+		*(.ccm.data*)
+		PROVIDE(__ccm_data_end__ = .);
+	} > CCM AT > FLASH
+
+	.ccm_bss : ALIGN(4) {
+		PROVIDE(__bss_start__ = .);
+		*(.ccm.bss*)
+		*(COMMON)		
+		PROVIDE(__bss_end__ = .);
+	} > CCM
+
+	PROVIDE(__ccm_data_init_start__ = LOADADDR(.data));*/
+
+	.ccm_noinit (NOLOAD) : ALIGN(4) {
+		PROVIDE(__ccm_noinit_start__ = .);
+		*(.ccm.noinit*)
+		PROVIDE(__ccm_noinit_end__ = .);
+	} > CCM
+
+	.stack_check (NOLOAD) : ALIGN(4) {
+		. = . + __min_stack_size__;
+		. = ALIGN(8);
+	} > CCM
+
+	__main_stack_end__ =  __ccm_end__;
+
+	.bkp_noinit (NOLOAD) : ALIGN(4) {
+		PROVIDE(__bkp_noinit_start__ = .);
+		*(.bkp.noinit*)
+		PROVIDE(__bkp_noinit_end__ = .);
+	} > SRAM_BCKUP
 }

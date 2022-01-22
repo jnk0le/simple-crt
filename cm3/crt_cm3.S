@@ -17,7 +17,7 @@ Reset_Handler:
 	adr r0, mem_init_symbols
 	ldmia r0!, {r2,r3,r4,r5}
 
-	// 2 cycles faster but less dense
+	// 2 cycles faster but less dense, loops not 64bit aligned
 	//ldr r2, =__data_init_start__
 	//ldr r3, =__data_start__
 	//ldr r4, =__data_end__

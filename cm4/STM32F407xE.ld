@@ -19,8 +19,8 @@ MEMORY
 	SRAM1 (rwx) : ORIGIN = 0x20000000, LENGTH = 112K
 	SRAM2 (rw) : ORIGIN = 0x2001C000, LENGTH = 16K*/
 	
-	CCM (rw) : ORIGIN = 0x38000000, LENGTH = 64K
-	SRAM_BCKUP (rw) : ORIGIN = 0x38800000, LENGTH = 4K
+	CCM (rw) : ORIGIN = 0x10000000, LENGTH = 64K
+	SRAM_BCKUP (rw) : ORIGIN = 0x40024000, LENGTH = 4K
 }
 
 __flash_start__ = ORIGIN(FLASH);
@@ -33,7 +33,7 @@ __ram_end__ = __ram_start__ + __ram_size__;
 
 __ccm_start__ = ORIGIN(CCM);
 __ccm_size__ = LENGTH(CCM);
-__ccm_end__ = __ram_start__ + __ram_size__;
+__ccm_end__ = __ccm_start__ + __ccm_size__;
 
 __min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 1024;
 __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;

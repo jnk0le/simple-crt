@@ -56,6 +56,8 @@ Reset_Handler:
 
 	b .
 
+.align 2
+
 mem_init_symbols:
 	.long __data_init_start__ // r2
 	.long __data_start__ // r3

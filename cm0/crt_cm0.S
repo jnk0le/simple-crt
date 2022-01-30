@@ -49,6 +49,8 @@ Reset_Handler:
 #endif
 
 	b .
+	
+.align 2
 
 mem_init_symbols:
 	.long __data_init_start__ // r2

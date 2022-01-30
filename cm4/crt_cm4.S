@@ -14,14 +14,25 @@
 .align 3
 
 Reset_Handler:
+
+#if defined (__VFP_FP__) && !defined(__SOFTFP__)
 	adr r0, mem_init_symbols
-	ldmia r0!, {r2,r3,r4,r5}
+	ldmia r0!, {r2,r3,r4,r5,r6}
 
 	// 2 cycles faster but less dense
 	//ldr r2, =__data_init_start__
 	//ldr r3, =__data_start__
 	//ldr r4, =__data_end__
 	//ldr r5, =__bss_end__
+	//ldr r6, =0xE000ED88 // CPACR
+
+	ldr r0, [r6] // cannot be pipelined after literal loads anyway
+	orr r0, #(0b11 << 20)|(0b11 << 22) // enable CP10 and CP11 coprocessors (FPU)
+	str r0, [r6]
+#else
+	adr r0, mem_init_symbols
+	ldmia r0!, {r2,r3,r4,r5}
+#endif
 
 	b 2f // section size is not known during compilation so it have to be used in case of empty section
 	nop // padding for literal table, align both loops entry to 4 bytes
@@ -63,3 +74,6 @@ mem_init_symbols:
 	.long __data_start__ // r3
 	.long __data_end__ // r4
 	.long __bss_end__ // r5
+#if defined (__VFP_FP__) && !defined(__SOFTFP__)
+	.long 0xE000ED88 // r6 - CPACR
+#endif

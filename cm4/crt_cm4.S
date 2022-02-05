@@ -1,5 +1,5 @@
 /*****************************************************************************
- * cortex-m3 minimum startup code                                            *
+ * cortex-m4 minimum startup code                                            *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *

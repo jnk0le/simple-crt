@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Minimal linker script for STM32F407xE with stack in ccm, data/bss in ram  *
+ * Minimal linker script for STM32F407xE with data, bss and stack in CCM     *
  * Author : jnk0le@hotmail.com                                               *
  *          https://github.com/jnk0le                                        *
  * License: CC0                                                              *
@@ -85,7 +85,7 @@ SECTIONS
 		PROVIDE(__data_start__ = .);
 		*(.data* .gnu.linkonce.d.*)
 		PROVIDE(__data_end__ = .);
-	} > RAM AT > FLASH
+	} > CCM AT > FLASH
 
 	PROVIDE(__data_init_start__ = LOADADDR(.data));
 
@@ -94,12 +94,36 @@ SECTIONS
 		*(.bss* .gnu.linkonce.b.*)
 		*(COMMON)		
 		PROVIDE(__bss_end__ = .);
-	} > RAM
+	} > CCM
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
 		*(.noinit*) 
 		PROVIDE(__noinit_end__ = .);
+	} > CCM
+
+	__heap_end__ = __ram_end__;
+
+	/*.ram_data : ALIGN(4) {
+		PROVIDE(__ram_data_start__ = .);
+		*(.ram.data*)
+		PROVIDE(__ram_data_end__ = .);
+	} > RAM AT > FLASH
+	
+	PROVIDE(__ram_data_init_start__ = LOADADDR(.data));
+	
+	.ram_bss : ALIGN(4) {
+		PROVIDE(__ram_bss_start__ = .);
+		*(.ram.bss*)
+		*(COMMON)		
+		PROVIDE(__ram_bss_end__ = .);
+	} > RAM
+	*/
+
+	.ram_noinit (NOLOAD) : ALIGN(4) {
+		PROVIDE(__ram_noinit_start__ = .);
+		*(.ram.noinit*)
+		PROVIDE(__ram_noinit_end__ = .);
 	} > RAM
 
 	.heap_check (NOLOAD) : ALIGN(4) {
@@ -108,33 +132,6 @@ SECTIONS
 		. = ALIGN(8);
 	} > RAM
 
-	__heap_end__ = __ram_end__;
-
-	/*.ccm_data : ALIGN(4) {
-		PROVIDE(__ccm_data_start__ = .);
-		*(.ccm.data*)
-		PROVIDE(__ccm_data_end__ = .);
-	} > CCM AT > FLASH
-	
-	PROVIDE(__ccm_data_init_start__ = LOADADDR(.ccm_data));
-
-	.ccm_bss : ALIGN(4) {
-		PROVIDE(__ccm_bss_start__ = .);
-		*(.ccm.bss*)
-		*(COMMON)		
-		PROVIDE(__ccm_bss_end__ = .);
-	} > CCM
-	*/
-
-	.ccm_noinit (NOLOAD) : ALIGN(4) {
-		PROVIDE(__ccm_noinit_start__ = .);
-		*(.ccm.noinit*)
-		PROVIDE(__ccm_noinit_end__ = .);
-	} > CCM
-
-	/* stack can be in ram or ccm, performance wise doesn't matter,
-	SRAM1 and SRAM2 can't pipeline ahb bursts anyway */
-	
 	.stack_check (NOLOAD) : ALIGN(8) {
 		. = . + __min_stack_size__;
 		. = ALIGN(8);

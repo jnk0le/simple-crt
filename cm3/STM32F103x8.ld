@@ -91,7 +91,7 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
-	.heapstack_check (NOLOAD) : ALIGN(4) {
+	.heapstack_check (NOLOAD) : ALIGN(8) {
 		__heap_start__ = .;
 		. = . + __min_heap_size__;
 		. = . + __min_stack_size__;

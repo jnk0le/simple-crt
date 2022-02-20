@@ -127,7 +127,7 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > DTCM
 
-	.stack_check (NOLOAD) : {
+	.stack_check (NOLOAD) : ALIGN(8); {
 		. = . + __min_stack_size__;
 		. = ALIGN(8);
 	} > DTCM

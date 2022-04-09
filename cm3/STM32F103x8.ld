@@ -24,7 +24,7 @@ __ram_start__ = ORIGIN(RAM);
 __ram_size__ = LENGTH(RAM);
 __ram_end__ = __ram_start__ + __ram_size__;
 
-__min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 256;
+__min_stack_size__ = DEFINED(__min_stack_size__) ? __min_stack_size___ : 512;
 __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 0;
 
 SECTIONS
@@ -91,13 +91,12 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
-	.heapstack_check (NOLOAD) : ALIGN(8) {
+	.heapstack (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
-		. = . + __min_heap_size__;
-		. = . + __min_stack_size__;
-		. = ALIGN(8);
 	} > RAM
 
 	__heap_end__ = __ram_end__ - __min_stack_size__;
 	__main_stack_end__ =  __ram_end__;
+
+	ASSERT((__heap_start__ + __min_heap_size__ + __min_stack_size__) <= __ram_end__, "not enough space for heap and stack")
 }

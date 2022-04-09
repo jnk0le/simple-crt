@@ -8,11 +8,7 @@
 	__attribute__((weak)) void Default_Handler(void); // [-Wmissing-prototypes]
 	__attribute__((weak)) void Default_Handler(void)
 	{
-	#ifdef DEBUG
 		while(1) asm volatile("bkpt #0");
-	#else
-		while(1);
-	#endif
 	}
 
 	void __attribute__ ((weak, alias("Default_Handler"))) NMI_Handler(void);

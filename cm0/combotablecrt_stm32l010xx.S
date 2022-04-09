@@ -108,11 +108,7 @@ mem_init_symbols:
 
 .thumb_func
 Default_Handler:
-#if defined(DEBUG)
 	bkpt #0
-#else
-	nop // padding
-#endif
 	b Default_Handler
 
 	.long SPI1_IRQHandler

@@ -96,13 +96,12 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
-	.heapstack_check (NOLOAD) : ALIGN(4) {
+	.heapstack (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
-		. = . + __min_heap_size__;
-		. = . + __min_stack_size__;
-		. = ALIGN(8);
 	} > RAM
 
 	__heap_end__ = __ram_end__ - __min_stack_size__;
 	__main_stack_end__ =  __ram_end__;
+
+	ASSERT((__heap_start__ + __min_heap_size__ + __min_stack_size__) <= __ram_end__, "not enough space for heap and stack")
 }

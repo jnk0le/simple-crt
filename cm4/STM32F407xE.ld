@@ -102,13 +102,13 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
-	.heap_check (NOLOAD) : ALIGN(4) {
+	.heap (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
-		. = . + __min_heap_size__;
-		. = ALIGN(8);
 	} > RAM
 
 	__heap_end__ = __ram_end__;
+	
+	ASSERT((__heap_start__ + __min_heap_size__) <= __ram_end__, "not enough space for heap")
 
 	/*.ccm_data : ALIGN(4) {
 		PROVIDE(__ccm_data_start__ = .);
@@ -135,12 +135,13 @@ SECTIONS
 	/* stack can be in ram or ccm, performance wise doesn't matter,
 	SRAM1 and SRAM2 can't pipeline ahb bursts anyway */
 	
-	.stack_check (NOLOAD) : ALIGN(8) {
-		. = . + __min_stack_size__;
-		. = ALIGN(8);
+	.stack (NOLOAD) : ALIGN(8) {
+		__main_stack_start__ = .;
 	} > CCM
 
 	__main_stack_end__ =  __ccm_end__;
+
+	ASSERT((__main_stack_start__ + __min_stack_size__) <= __ccm_end__, "not enough space for stack")
 
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__bkp_noinit_start__ = .);

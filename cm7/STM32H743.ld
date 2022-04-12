@@ -127,12 +127,13 @@ SECTIONS
 		PROVIDE(__noinit_end__ = .);
 	} > DTCM
 
-	.stack_check (NOLOAD) : ALIGN(8) {
-		. = . + __min_stack_size__;
-		. = ALIGN(8);
+	.stack (NOLOAD) : ALIGN(8) {
+		__main_stack_start__ = .;
 	} > DTCM
 
 	__main_stack_end__ =  __dtcm_end__;
+	
+	ASSERT((__main_stack_start__ + __min_stack_size__) <= __dtcm_end__, "not enough space for stack")
 
 	/* allocate space for vector table that needs to be
 	   copied and relocated (VTOR offset) by software */
@@ -158,12 +159,13 @@ SECTIONS
 		PROVIDE(__d1_noinit_end__ = .);
 	} > SRAM_D1
 
-	.heap_check (NOLOAD) : ALIGN(4) {
+	.heap (NOLOAD) : ALIGN(4) {
 		__heap_start__ = .;
-		. = . + __min_heap_size__;
 	} > SRAM_D1
 
 	__heap_end__ = __d1_end__;
+
+	ASSERT((__heap_start__ + __min_heap_size__) <= __d1_end__, "not enough space for heap")
 
 	.D2_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d2_noinit_start__ = .);

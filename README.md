@@ -1,5 +1,5 @@
 # simple crt
-Absolute minimum and optimized startup/newlib-stub/semihosting code for use with e.g. eclipse iot (mcu on eclipse) /w gcc.
+Absolute minimum and optimized startup/newlib-stub/semihosting code for use with e.g. eclipse embedded cdt (mcu on eclipse) /w gcc.
 
 for use with 
 

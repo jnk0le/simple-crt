@@ -38,7 +38,7 @@ SECTIONS
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
-		*(.text* .gnu.linkonce.t*);
+		*(.text .text.* .gnu.linkonce.t.*);
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))
@@ -47,7 +47,7 @@ SECTIONS
 	} > FLASH
 
 	.rodata : ALIGN(4) {
-		*(.rodata* .gnu.linkonce.r*);
+		*(.rodata .rodata.* .gnu.linkonce.r.*);
 	} > FLASH
 
 	.tables : ALIGN(4) {
@@ -72,7 +72,7 @@ SECTIONS
 
 	.data : ALIGN(4) {
 		PROVIDE(__data_start__ = .);
-		*(.data* .gnu.linkonce.d.*)
+		*(.data .data.* .gnu.linkonce.d.*)
 		PROVIDE(__data_end__ = .);
 	} > RAM AT > FLASH
 
@@ -80,14 +80,14 @@ SECTIONS
 
 	.bss : ALIGN(4) {
 		PROVIDE(__bss_start__ = .);
-		*(.bss* .gnu.linkonce.b.*)
-		*(COMMON)		
+		*(.bss .bss.* .gnu.linkonce.b.*)
+		*(COMMON)
 		PROVIDE(__bss_end__ = .);
 	} > RAM
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
-		*(.noinit*) 
+		*(.noinit .noinit.*)
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 

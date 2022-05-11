@@ -72,7 +72,7 @@ SECTIONS
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
-		*(.text* .gnu.linkonce.t*);
+		*(.text .text.* .gnu.linkonce.t.*);
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))
@@ -81,7 +81,7 @@ SECTIONS
 	} > FLASH
 
 	.rodata : ALIGN(4) {
-		*(.rodata* .gnu.linkonce.r*);
+		*(.rodata .rodata.* .gnu.linkonce.r.*);
 	} > FLASH
 
 	.tables : ALIGN(4) {
@@ -106,7 +106,7 @@ SECTIONS
 
 	.data : ALIGN(8) {
 		PROVIDE(__data_start__ = .);
-		*(.data* .gnu.linkonce.d*)
+		*(.data .data.* .gnu.linkonce.d.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__data_end__ = .);
 	} > DTCM AT > FLASH
@@ -115,7 +115,7 @@ SECTIONS
 
 	.bss : ALIGN(8) {
 		PROVIDE(__bss_start__ = .);
-		*(.bss* .gnu.linkonce.b*)
+		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
 		. = ALIGN(8); /* will clear it by 8 bytes per round */
 		PROVIDE(__bss_end__ = .);
@@ -123,7 +123,7 @@ SECTIONS
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
-		*(.noinit*) 
+		*(.noinit .noint*)
 		PROVIDE(__noinit_end__ = .);
 	} > DTCM
 
@@ -146,7 +146,7 @@ SECTIONS
 
 	.itcm_text : ALIGN(8) {
 		PROVIDE(__itcm_text_start__ = .);
-		*(.itcm.text*)
+		*(.itcm.text .itcm.text.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		PROVIDE(__itcm_text_end__ = .);
 	} > ITCM AT > FLASH
@@ -155,7 +155,7 @@ SECTIONS
 
 	.D1_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d1_noinit_start__ = .);
-		*(.D1.noinit*)
+		*(.D1.noinit .D1.noinit*)
 		PROVIDE(__d1_noinit_end__ = .);
 	} > SRAM_D1
 
@@ -169,19 +169,19 @@ SECTIONS
 
 	.D2_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d2_noinit_start__ = .);
-		*(.D2.noinit*)
+		*(.D2.noinit .D2.noinit.*)
 		PROVIDE(__d2_noinit_end__ = .);
 	} > SRAM_D2
 
 	.D3_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__d3_noinit_start__ = .);
-		*(.D3.noinit*)
+		*(.D3.noinit .D3.noinit.*)
 		PROVIDE(__d3_noinit_end__ = .);
 	} > SRAM_D3
 
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__bkp_noinit_start__ = .);
-		*(.bkp.noinit*)
+		*(.bkp.noinit .bkp.noinit.*)
 		PROVIDE(__bkp_noinit_end__ = .);
 	} > SRAM_BCKUP
 }

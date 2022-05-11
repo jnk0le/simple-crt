@@ -49,7 +49,7 @@ SECTIONS
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
-		*(.text* .gnu.linkonce.t*);
+		*(.text .text.* .gnu.linkonce.t.*);
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))
@@ -58,7 +58,7 @@ SECTIONS
 	} > FLASH
 
 	.rodata : ALIGN(4) {
-		*(.rodata* .gnu.linkonce.r*);
+		*(.rodata .rodata.* .gnu.linkonce.r.*);
 	} > FLASH
 
 	.tables : ALIGN(4) {
@@ -83,7 +83,7 @@ SECTIONS
 
 	.data : ALIGN(4) {
 		PROVIDE(__data_start__ = .);
-		*(.data* .gnu.linkonce.d.*)
+		*(.data .data.* .gnu.linkonce.d.*)
 		PROVIDE(__data_end__ = .);
 	} > RAM AT > FLASH
 
@@ -91,14 +91,14 @@ SECTIONS
 
 	.bss : ALIGN(4) {
 		PROVIDE(__bss_start__ = .);
-		*(.bss* .gnu.linkonce.b.*)
-		*(COMMON)		
+		*(.bss .bss.* .gnu.linkonce.b.*)
+		*(COMMON)
 		PROVIDE(__bss_end__ = .);
 	} > RAM
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__noinit_start__ = .);
-		*(.noinit*) 
+		*(.noinit .noinit*)
 		PROVIDE(__noinit_end__ = .);
 	} > RAM
 
@@ -112,7 +112,7 @@ SECTIONS
 
 	/*.ccm_data : ALIGN(4) {
 		PROVIDE(__ccm_data_start__ = .);
-		*(.ccm.data*)
+		*(.ccm.data .ccm.data.*)
 		PROVIDE(__ccm_data_end__ = .);
 	} > CCM AT > FLASH
 	
@@ -120,15 +120,14 @@ SECTIONS
 
 	.ccm_bss : ALIGN(4) {
 		PROVIDE(__ccm_bss_start__ = .);
-		*(.ccm.bss*)
-		*(COMMON)		
+		*(.ccm.bss .ccm.bss.*)
 		PROVIDE(__ccm_bss_end__ = .);
 	} > CCM
 	*/
 
 	.ccm_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__ccm_noinit_start__ = .);
-		*(.ccm.noinit*)
+		*(.ccm.noinit .ccm.noinit.*)
 		PROVIDE(__ccm_noinit_end__ = .);
 	} > CCM
 
@@ -145,7 +144,7 @@ SECTIONS
 
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		PROVIDE(__bkp_noinit_start__ = .);
-		*(.bkp.noinit*)
+		*(.bkp.noinit .bkp.noinit.*)
 		PROVIDE(__bkp_noinit_end__ = .);
 	} > SRAM_BCKUP
 }

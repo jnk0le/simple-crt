@@ -32,14 +32,14 @@ SECTIONS
 {
 	.isr_vector_table : ALIGN(4) {
 		PROVIDE(__isr_vector_table_start__ = .);
-		KEEP(*(.isr_vector_table));
+		KEEP(*(.isr_vector_table))
 		PROVIDE(__isr_vector_table_end__ = .);
 	} > FLASH
 
 	.text : ALIGN(4) {
 		PROVIDE(__text_start__ = .);
 		
-		*(.text .text.* .gnu.linkonce.t.*);
+		*(.text .text.* .gnu.linkonce.t.*)
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))
@@ -48,7 +48,7 @@ SECTIONS
 	} > FLASH
 
 	.rodata : ALIGN(4) {
-		*(.rodata* .rodata.* .gnu.linkonce.r.*);
+		*(.rodata* .rodata.* .gnu.linkonce.r.*)
 	} > FLASH
 
 	.tables : ALIGN(4) {

@@ -63,8 +63,7 @@ SECTIONS
 
 	.tables : ALIGN(4) {
 		PROVIDE(__preinit_array_start = .);
-		KEEP(*(SORT(.preinit_array*))) 
-		KEEP(*(.preinit_array))
+		KEEP(*(SORT(.preinit_array*)))
 		PROVIDE(__preinit_array_end = .);
 	
 		PROVIDE(__init_array_start = .);

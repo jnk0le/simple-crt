@@ -41,20 +41,20 @@ __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 SECTIONS
 {
 	.isr_vector_table : ALIGN(4) {
-		PROVIDE(__isr_vector_table_start__ = .);
+		__isr_vector_table_start__ = .;
 		KEEP(*(.isr_vector_table))
-		PROVIDE(__isr_vector_table_end__ = .);
+		__isr_vector_table_end__ = .;
 	} > FLASH
 
 	.text : ALIGN(4) {
-		PROVIDE(__text_start__ = .);
+		__text_start__ = .;
 		
 		*(.text .text.* .gnu.linkonce.t.*)
 		
 		KEEP(*(.init))
 		KEEP(*(.fini))
 		
-		PROVIDE(__text_end__ = .);
+		__text_end__ = .;
 	} > FLASH
 
 	.rodata : ALIGN(4) {
@@ -62,17 +62,17 @@ SECTIONS
 	} > FLASH
 
 	.tables : ALIGN(4) {
-		PROVIDE(__preinit_array_start = .);
+		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*)))
-		PROVIDE(__preinit_array_end = .);
+		__preinit_array_end = .;
 	
-		PROVIDE(__init_array_start = .);
+		__init_array_start = .;
 		KEEP(*(SORT(.init_array*)))
-		PROVIDE(__init_array_end = .);
+		__init_array_end = .;
 		
-		PROVIDE(__fini_array_start = .);
+		__fini_array_start = .;
  		KEEP(*(SORT(.fini_array*)))
-		PROVIDE(__fini_array_end = .);
+		__fini_array_end = .;
 	
 		*(vtable)
 		*(.ARM.extab* .gnu.linkonce.armextab*)
@@ -81,24 +81,24 @@ SECTIONS
 	} > FLASH
 
 	.data : ALIGN(4) {
-		PROVIDE(__data_start__ = .);
+		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)
-		PROVIDE(__data_end__ = .);
+		__data_end__ = .;
 	} > RAM AT > FLASH
 
-	PROVIDE(__data_init_start__ = LOADADDR(.data));
+	__data_init_start__ = LOADADDR(.data);
 
 	.bss : ALIGN(4) {
-		PROVIDE(__bss_start__ = .);
+		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
-		PROVIDE(__bss_end__ = .);
+		__bss_end__ = .;
 	} > RAM
 
 	.noinit (NOLOAD) : ALIGN(4) {
-		PROVIDE(__noinit_start__ = .);
+		__noinit_start__ = .;
 		*(.noinit .noinit*)
-		PROVIDE(__noinit_end__ = .);
+		__noinit_end__ = .;
 	} > RAM
 
 	.heap (NOLOAD) : ALIGN(4) {
@@ -110,24 +110,24 @@ SECTIONS
 	ASSERT((__heap_start__ + __min_heap_size__) <= __ram_end__, "not enough space for heap")
 
 	/*.ccm_data : ALIGN(4) {
-		PROVIDE(__ccm_data_start__ = .);
+		__ccm_data_start__ = .;
 		*(.ccm.data .ccm.data.*)
-		PROVIDE(__ccm_data_end__ = .);
+		__ccm_data_end__ = .;
 	} > CCM AT > FLASH
 	
-	PROVIDE(__ccm_data_init_start__ = LOADADDR(.ccm_data));
+	__ccm_data_init_start__ = LOADADDR(.ccm_data);
 
 	.ccm_bss : ALIGN(4) {
-		PROVIDE(__ccm_bss_start__ = .);
+		__ccm_bss_start__ = .;
 		*(.ccm.bss .ccm.bss.*)
-		PROVIDE(__ccm_bss_end__ = .);
+		__ccm_bss_end__ = .;
 	} > CCM
 	*/
 
 	.ccm_noinit (NOLOAD) : ALIGN(4) {
-		PROVIDE(__ccm_noinit_start__ = .);
+		__ccm_noinit_start__ = .;
 		*(.ccm.noinit .ccm.noinit.*)
-		PROVIDE(__ccm_noinit_end__ = .);
+		__ccm_noinit_end__ = .;
 	} > CCM
 
 	/* stack can be in ram or ccm, performance wise doesn't matter,
@@ -142,8 +142,8 @@ SECTIONS
 	ASSERT((__main_stack_start__ + __min_stack_size__) <= __ccm_end__, "not enough space for stack")
 
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
-		PROVIDE(__bkp_noinit_start__ = .);
+		__bkp_noinit_start__ = .;
 		*(.bkp.noinit .bkp.noinit.*)
-		PROVIDE(__bkp_noinit_end__ = .);
+		__bkp_noinit_end__ = .;
 	} > SRAM_BCKUP
 }

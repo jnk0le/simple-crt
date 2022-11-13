@@ -37,6 +37,8 @@ To properly print sizes of each memory segment (e.g. stm32h7)
 
 Virgin openocd+gdb doesn't support live variable view and SWO/ITM.
 
+Any change in linker scripts has to be followed by project clean and modifying at least one of the compiled project files (needs to be saved with a recent date)
+
 ### semihosting
 
 Implemented according to the spec: https://developer.arm.com/documentation/100863/0300/

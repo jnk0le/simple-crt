@@ -7,8 +7,6 @@
 
 #include "semihosting.h"
 
-#define UNUSED(x) (void)(x)
-
 extern char __heap_start__; // linker definition
 extern char __heap_end__; // linker definition
 

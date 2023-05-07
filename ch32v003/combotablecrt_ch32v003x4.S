@@ -132,7 +132,7 @@ __irq_vector_table:
 	li t0, 0x88 // must write MIE with MPIE otherwise doesn't work
 	csrw mstatus, t0 // use csrw to cleanup upper bits
 
-	jal main
+	call main
 
 	// default handler serves also as a trap in case main returns
 Default_Handler:

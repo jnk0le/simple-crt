@@ -13,7 +13,7 @@
 // - .preinit_array is right after .data LMA in FLASH
 // - .init_array is right after .preinit_array in FLASH
 // - RAM is <= 2KiB
-// - main() is in FLASH (or at least compiler can isert a veener)
+// - main() is in FLASH (or at least compiler can insert a veener)
 // - main() doesn't return
 // - vectored interrupts with HPE and preemtion enabled
 

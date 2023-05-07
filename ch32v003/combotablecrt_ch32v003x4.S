@@ -28,8 +28,6 @@
 	// a1 - working mem ptr (.data + .bss)
 	// a2 - zero (c.sw for .bss and c.lw from vect table)
 
-	// code would be a bit more efficient with (compressed) single bit insns
-
 .global __irq_vector_table
 __irq_vector_table:
 	// "system" names consistent with stock defs, which are mostly copypaste from arm

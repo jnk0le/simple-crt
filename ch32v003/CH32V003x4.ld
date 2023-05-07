@@ -85,7 +85,7 @@ SECTIONS
 		*(COMMON)
 		__bss_end__ = .;
 	} > RAM
-	
+
 	__bss_size__ = SIZEOF(.bss);
 
 	.noinit (NOLOAD) : ALIGN(4) {

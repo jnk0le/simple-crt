@@ -30,7 +30,7 @@
 
 .global __irq_vector_table
 __irq_vector_table:
-	// "system" names consistent with stock defs, which are mostly copypaste from arm
+	// "system" irqs consistent with stock defs, which are mostly copypaste from arm
 	// 8 bytes here
 .option norvc
 	lui a1, %hi(0x20000000) // __data_start__

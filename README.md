@@ -5,7 +5,7 @@ Absolute minimum and optimized startup/newlib-stub/semihosting code for use with
 for use with 
 
 ```
--fno-exceptions (temporarily)
+-fno-exceptions
 -nostartfiles
 --specs=nano.specs
 --specs=nosys.specs

@@ -104,7 +104,7 @@ __irq_vector_table:
 
 .option pop
 
-5:	c.sw a2, (a1) // colud as well c.li + c.sw
+5:	c.sw a2, (a1)
 	c.addi a1, 4
 4:	bne a1, s1, 5b
 

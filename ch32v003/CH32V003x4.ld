@@ -101,5 +101,9 @@ SECTIONS
 	__heap_end__ = __ram_end__ - __min_stack_size__;
 	__main_stack_end__ =  __ram_end__;
 
+	/* make an 11 bit offset to initialize stack pointer by using __bss_end__,
+	cut off 4 bytes in rare case of empty .data and .bss as to fit in single addi instruction */
+	__ch32v003_bsstostack_offset__ = ((__data_size__ + __bss_size__) == 0 ) ? 2044 : (__main_stack_end__ - __bss_end__);
+
 	ASSERT((__heap_start__ + __min_heap_size__ + __min_stack_size__) <= __ram_end__, "not enough space for heap and stack")
 }

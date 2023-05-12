@@ -108,10 +108,16 @@ __irq_vector_table:
 	c.addi a1, 4
 4:	bne a1, s1, 5b
 
-	// prepare stack ahead of calling constructors
-	// stack top uses annoying constant so it will always be 8 byte sequence
-	lui sp, %hi(__main_stack_end__)
-	addi sp, sp, %lo(__main_stack_end__)
+	// Prepare stack ahead of calling constructors.
+	// Stack top uses annoying constant so we need a workaround for <8 byte sequence.
+	// Will sacrifice 4 bytes of stack in case of 0 bytes in data+bss.
+	// It is a rare case where the entire stack space is not going to be used anyway.
+	// The alternative is addi + c.addi but that will always be 6 byte sequence due to the
+	// way, linker symbols work (limited/no compiler optimizations, cannot conditionally compile on them)
+.option push
+.option norelax // gets reduced to li without this
+	addi sp, a1, %lo(__ch32v003_bsstostack_offset__)
+.option pop
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 	// call static constructors (c++ and attribute ones), only s0, s1 are preserved

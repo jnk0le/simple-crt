@@ -99,7 +99,7 @@ SECTIONS
 	} > RAM
 
 	__heap_end__ = __ram_end__ - __min_stack_size__;
-	__main_stack_end__ =  __ram_end__;
+	__main_stack_end__ = __ram_end__;
 
 	/* make an 11 bit offset to initialize stack pointer by using __bss_end__,
 	cut off 4 bytes in rare case of empty .data and .bss as to fit in single addi instruction */

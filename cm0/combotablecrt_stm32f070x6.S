@@ -69,6 +69,7 @@ Reset_Handler:
 	.long WWDG_IRQHandler
 
 	// 4 bytes available here
+.balign 4
 data_init_start: 
 	.long __data_init_start__
 
@@ -80,6 +81,7 @@ data_init_start:
 	.long EXTI4_15_IRQHandler
 
 	// 4 bytes available here
+.balign 4
 data_start: 
 	.long __data_start__
 
@@ -91,6 +93,7 @@ data_start:
 	.long TIM1_CC_IRQHandler
 
 	// 4 bytes available here
+.balign 4
 data_end: 
 	.long __data_end__
 
@@ -113,6 +116,7 @@ data_end:
 	.long I2C1_IRQHandler
 
 	// 4 bytes available here // I2C2_IRQHandler on x8
+.balign 4
 bss_end: 
 	.long __bss_end__
 

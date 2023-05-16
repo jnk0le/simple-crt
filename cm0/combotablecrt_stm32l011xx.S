@@ -82,6 +82,7 @@ Reset_Handler:
 	.long TIM2_IRQHandler
 
 	// 16 bytes available here
+.balign 4
 mem_init_symbols:
 	.long __data_init_start__ // r2
 	.long __data_start__ // r3

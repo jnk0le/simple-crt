@@ -224,3 +224,7 @@ Default_Handler:
 
 	.weak TIM2_IRQHandler
 	.set TIM2_IRQHandler, Default_Handler
+
+#if !defined(CH32V003x4)
+	#error "unsupported or unknown MCU"
+#endif

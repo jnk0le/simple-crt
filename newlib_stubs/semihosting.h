@@ -41,15 +41,34 @@
 	static inline int call_host(int reason, void* param);
 	static inline int call_host(int reason, void* param)
 	{
+	#if defined(__ARM_ARCH_6M__)||defined(__ARM_ARCH_7M__)||defined(__ARM_ARCH_7EM__)
 		register long result asm("r0") = reason;
 		register void* r1 asm("r1") = param;
 
 		asm volatile(
-			"bkpt #0xab     \n\t"
+			"bkpt #0xab \n\t"
 			: [R0] "+r" (result) // return in same register
 			: [R1] "r" (r1)
 			: "memory"
 		);
+	#elif defined(__riscv)
+		register long result asm("a0") = reason;
+		register void* a1 asm("a1") = param;
+
+		asm volatile(
+			".option push \n\t"
+			".option norvc \n\t"
+			"slli x0, x0, 0x1f \n\t"
+			"ebreak \n\t"
+			"srai x0, x0, 0x7 \n\t"
+			".option pop \n\t"
+			: [A0] "+r" (result) // return in same register
+			: [A1] "r" (a1)
+			: "memory"
+		);
+	#else
+		#error "unknown architecture"
+	#endif
 
 		return result;
 	}

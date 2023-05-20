@@ -23,12 +23,12 @@ To define different stack/heap limitations
 ```
 note that space "reserved" for stack/heap is counted as used by variables.
 
-To disable c++ static initialization (and premature out 96 bytes)
+To disable c++ static initialization
 `__CRT_NO_STATIC_INITIALIZERS` have to be globally (or at last within crt files) defined through
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
 `__CRT_NORETURN_FROM_MAIN` will remove deinitialiation only. (crashbranch remains)
 Those macros will not remove constructors/destructors and init/fini arrays (have to be KEEPt in linker
- to work at all when used)
+to work at all when used)
 
 To properly print sizes of each memory segment (e.g. stm32h7)
 ```
@@ -47,7 +47,8 @@ To use semihosting, it must be enabled in gdb by `monitor arm semihosting enable
 or "enable arm semihosting" option in eclipse debug startup configuration
 
 Newlib implementation of `printf("")` is caching output until '\n' character (or buffer exahaustion ??? allocates 1kB through malloc)
-`fprintf(stderr,"")` is printing out one character at a time which is extremly slow through semihosting.
+`fprintf(stderr,"")` is printing out one character at a time which is extremly slow through stlinkv2 clone (and
+a bit less slow through wchlinkE)
 
 stdio.h assumes hardcoded stdin/stdout/stderr handlers to 0,1,2 but obtaining it through proper way by 
 opening special ":tt" file assigns a bigger numbers. For me both ways work.
@@ -65,7 +66,7 @@ to avoid it:
 - write something to console and press enter
 - terminate as usual
 
-To redirect default handlers to ":tt" assignments one of the following macros
+To redirect default handlers to ":tt" assignments one of the following macros:
 ```
 WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDOUT
 WRITE_REDIRECT_TO_SPECIAL_PATH_TT_STDERR

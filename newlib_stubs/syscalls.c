@@ -64,3 +64,36 @@ __attribute__((weak)) int _read(int file, char *ptr, int len)
 
 	return semihost_read(file, ptr, len);
 }
+
+// empty stubs to avoid warnings
+
+int _close(int fd);
+int _close(int fd)
+{
+	(void)fd; // unused
+	return -1;
+}
+
+int _fstat(int file, struct stat *st);
+int _fstat(int file, struct stat *st)
+{
+	(void)file; // unused
+	st->st_mode = S_IFCHR;
+	return 0;
+}
+
+int _isatty(int file);
+int _isatty(int file)
+{
+	(void)file; // unused
+	return 1;
+}
+
+int _lseek(int file, int ptr, int dir);
+int _lseek(int file, int ptr, int dir)
+{
+	(void)file; // unused
+	(void)ptr; // unused
+	(void)dir; // unused
+	return 0;
+}

@@ -128,7 +128,7 @@ __irq_vector_table:
 
 	// vector table is at 0 offset so just set all mode bits
 	// csrsi can be used to just set the modes with preexisting offset
-	csrwi mtvec, 0b11
+	csrwi mtvec, (0x00000000 | 0b11) // address entries + vectored mode
 
 	// INTSYSCR - enable interrupt nesting and HPE
 	csrwi 0x804, 0b11

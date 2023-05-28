@@ -58,10 +58,16 @@ __irq_vector_table:
 	addi s1, s1, %lo(__bss_size__) // __bss_end__
 .option rvc
 
-	// accomodate extra 4 bytes
-	// vector table is at 0 offset so just set all mode bits
-	// csrsi can be used to just set the modes with preexisting offset
-	csrwi mtvec, 0b11
+	// Prepare stack ahead of calling constructors.
+	// Stack top uses annoying constant so we need a workaround for <8 byte sequence.
+	// Will sacrifice 4 bytes of stack in case of 0 bytes in data+bss.
+	// It is a rare case where the entire stack space is not going to be used anyway.
+	// The alternative is addi + c.addi but that will always be 6 byte sequence due to the
+	// way, linker symbols work (limited/no compiler optimizations, cannot conditionally compile on them)
+.option push
+.option norelax // gets reduced to li without this
+	addi sp, a1, %lo(__ch32v003_bsstostack_offset__)
+.option pop
 
 	c.j 4f // zero skip in bss loop directly
 
@@ -108,16 +114,6 @@ __irq_vector_table:
 	c.addi a1, 4
 4:	bne a1, s1, 5b
 
-	// Prepare stack ahead of calling constructors.
-	// Stack top uses annoying constant so we need a workaround for <8 byte sequence.
-	// Will sacrifice 4 bytes of stack in case of 0 bytes in data+bss.
-	// It is a rare case where the entire stack space is not going to be used anyway.
-	// The alternative is addi + c.addi but that will always be 6 byte sequence due to the
-	// way, linker symbols work (limited/no compiler optimizations, cannot conditionally compile on them)
-.option push
-.option norelax // gets reduced to li without this
-	addi sp, a1, %lo(__ch32v003_bsstostack_offset__)
-.option pop
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 	// call static constructors (c++ and attribute ones), only s0, s1 are preserved
@@ -129,6 +125,10 @@ __irq_vector_table:
 	c.jalr a0
 6:	bne s0, s1, 7b
 #endif
+
+	// vector table is at 0 offset so just set all mode bits
+	// csrsi can be used to just set the modes with preexisting offset
+	csrwi mtvec, 0b11
 
 	// INTSYSCR - enable interrupt nesting and HPE
 	csrwi 0x804, 0b11

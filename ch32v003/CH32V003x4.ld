@@ -34,7 +34,7 @@ SECTIONS
 		__isr_vector_table_end__ = .;
 	} > FLASH
 
-	/* FLASH starts at 0, so put rodata here to allow loads by x0+imm12 */
+	/* FLASH starts at 0, so put rodata here to allow pure imm12 addressing */
 	.rodata : ALIGN(4) {
 		*(.srodata .srodata.*)
 		*(.rodata .rodata.* .gnu.linkonce.r.*) 
@@ -59,7 +59,7 @@ SECTIONS
 	} > RAM AT > FLASH
 
 	__data_size__ = SIZEOF(.data);
-	__data_init_start__ = LOADADDR(.data); 
+	__data_init_start__ = LOADADDR(.data);
 
 	.tables : ALIGN(4) {
 		__preinit_array_start = .;

@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 //assumptions:
-// - no bootloader
+// - no bootloader at 0x00000000 (the one at 0x1ffff000 may be used)
 // - irq vector table stays at 0x00000000
 // - initialized sections are 4 byte aligned (init in 4 byte steps)
 // - __global_pointer$ == __data_start__ == __ram_start__

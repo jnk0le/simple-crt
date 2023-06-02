@@ -40,15 +40,11 @@ SECTIONS
 		*(.rodata .rodata.* .gnu.linkonce.r.*) 
 	} > FLASH
 
-	/*align to just 2 bytes*/
 	.text : ALIGN(2) {
 		__text_start__ = .;
 		*(.text .text.* .gnu.linkonce.t.*)
 		__text_end__ = .;
 	} > FLASH
-
-	/* there is only 2KiB of SRAM so we can load it in a single lui this way */
- 	__global_pointer$ = __ram_start__;
 
 	/*.data LMA must be before before constructors*/
 	.data : ALIGN(4) {
@@ -86,6 +82,8 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
+		/* there is only 2KiB of SRAM so we can load it in a single c.mv this way */
+ 	__global_pointer$ = __bss_end__;
 	__bss_size__ = SIZEOF(.bss);
 
 	.noinit (NOLOAD) : ALIGN(4) {

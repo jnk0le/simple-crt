@@ -5,8 +5,9 @@
  *****************************************************************************/
 
 //assumptions:
-// - no bootloader at 0x00000000 (the one at 0x1ffff000 may be used)
-// - irq vector table stays at 0x00000000
+// - application is starts at 0x00000000
+// - reset handler is entered by system reset only
+// - only the "system" botloader can be used (the one at 0x1ffff000)
 // - initialized sections are 4 byte aligned (init in 4 byte steps)
 // - __global_pointer$ == __data_start__ == __ram_start__
 // - .bss is right after .data in RAM
@@ -31,21 +32,24 @@
 __irq_vector_table:
 	// "system" irqs consistent with stock defs, which are mostly copypaste from arm
 	// 8 bytes here
-.option norvc
-	lui a1, %hi(0x20000000) // __data_start__
-.option rvc
-	c.li a2, 0
+
+	// reset state of `mtvec` is 0 so it can be recycled for zeroing a2
+	// while setting up the MODE bits
+	// this should also "solve" the interrupt hole
+	csrrwi a2, mtvec, (0x00000000 | 0b11) // address entries + vectored mode
+
+	c.lw s0, 60(a2) // __data_init_start__ // of course it doesn't accept labels
 	c.j 1f // continue preparing loop
 
 	.word NMI_Handler
 	.word HardFault_Handler
 
 	// 32 bytes here
-1:	c.mv gp, a1 // __global_pointer$
+1:
 .option norvc
+	lui a1, %hi(__data_start__) // 0x20000000
 	addi s1, a1, %lo(__data_end__) // __data_end__
 .option rvc
-	c.lw s0, 60(a2) // __data_init_start__ // of course it doesn't accept labels
 
 	c.j 2f // need to skip in case of empty section
 3:	c.lw a0, (s0)
@@ -66,7 +70,7 @@ __irq_vector_table:
 	// way, linker symbols work (limited/no compiler optimizations, cannot conditionally compile on them)
 .option push
 .option norelax // gets reduced to li without this
-	addi sp, a1, %lo(__ch32v003_bsstostack_offset__)
+	addi sp, s1, %lo(__ch32v003_bsstostack_offset__)
 .option pop
 
 	c.j 4f // zero skip in bss loop directly
@@ -114,6 +118,7 @@ __irq_vector_table:
 	c.addi a1, 4
 4:	bne a1, s1, 5b
 
+	c.mv gp, s1 // __global_pointer$ @ __bss_end__
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 	// call static constructors (c++ and attribute ones), only s0, s1 are preserved
@@ -126,15 +131,11 @@ __irq_vector_table:
 6:	bne s0, s1, 7b
 #endif
 
-	// vector table is at 0 offset so just set all mode bits
-	// csrsi can be used to just set the modes with preexisting offset
-	csrwi mtvec, (0x00000000 | 0b11) // address entries + vectored mode
-
 	// INTSYSCR - enable interrupt nesting and HPE
 	csrwi 0x804, 0b11
 
 	// enable irq
-	li t0, 0x88 // must write MIE with MPIE otherwise doesn't work
+	li t0, 0x88 // must write MIE with MPIE otherwise no effect
 	csrw mstatus, t0 // use csrw to cleanup upper bits
 
 	call main

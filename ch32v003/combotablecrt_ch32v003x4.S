@@ -1,5 +1,5 @@
 /*****************************************************************************
- * isr vector table combined with startup code for stm32f030x4 and f030x6    *
+ * isr vector table combined with startup code for ch32v003x4                *
  * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/

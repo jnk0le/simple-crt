@@ -82,7 +82,7 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
-		/* there is only 2KiB of SRAM so we can load it in a single c.mv this way */
+	/* there is only 2KiB of SRAM so we can load it in a single c.mv this way */
  	__global_pointer$ = __bss_end__;
 	__bss_size__ = SIZEOF(.bss);
 

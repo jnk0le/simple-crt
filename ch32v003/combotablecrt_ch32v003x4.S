@@ -85,8 +85,12 @@ __irq_vector_table:
 	.word SW_Handler
 
 	// 4 bytes here
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	// 60 bytes from base
 	.word __data_init_start__
+#else
+	.word 0
+#endif
 
 	// device irqs, consistent with irqn from header as well stock defs
 	.word WWDG_IRQHandler

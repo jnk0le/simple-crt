@@ -1,14 +1,28 @@
 /*****************************************************************************
  * isr vector table combined with startup code for stm32f070x6               *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
+
+//assumptions:
+// - initialized sections are 4 byte aligned (init in 4 byte steps)
+// - .bss is right after .data in RAM
+// - .preinit_array is right after .data LMA in FLASH
+// - .init_array is right after .preinit_array
+// - main() doesn't return
 
 .syntax unified
 .thumb
 
 .section .isr_vector_table, "ax", %progbits
+
+	// general allocation strategy:
+	// r0 - tmp
+	// r2 - working mem ptr (.data + .bss)
+	// r3 - .data final condition
+	// r4 - .bss final condition
+	// r5 - LMA data
+	// r6 - final cond for static initializers
 
 .global vectors // consistent with c version, should not compile if xxx_vectors.c gets also pulled in
 vectors:
@@ -19,47 +33,47 @@ vectors:
 	.long HardFault_Handler
 
 	// 28 bytes available here
-1:	ldmia r2!, {r0}
-	stmia r3!, {r0}
-2:	cmp r3, r4
-	bne 1b
+2:	ldmia r5!, {r0}
+	stmia r2!, {r0}
+1:	cmp r2, r3
+	bne 2b
 
-	// ldr r3, =__bss_start__ // reuse __data_end__ in r2 as __bss_start__
-	// .bss have to be placed right after the .data section
-	ldr r5, bss_end
-	b 3f // zeroing
+	ldr r4, bss_end
+	movs r0, #0
 
-6: // bl are 4byte
-#ifndef __CRT_NO_STATIC_INITIALIZERS
-	bl __run_init_array
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
+	ldr r6, init_array_end
+	b 3f // branch to cmp first, bss init fits into 8B space
+
+6:	ldmia r5!, {r0}
+	blx r0
+5:	cmp r5, r6
+	bne 6b
+
 	bl main
 #else
-	bl main // just call main faster
-	nop // padding
-	nop // padding
-#endif
+	b 3f // branch to cmp first, bss init fits into 8B space
 
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)&&!defined(__CRT_NORETURN_FROM_MAIN)
-	bl __run_fini_array
-#else
-	nop // padding
-	nop // padding
-#endif
+5:	bl main
 
-	b .
-	nop // padding
+	//padding
+	nop
+	nop
+	nop
+	nop
+	nop
+#endif
 
 	.long SVC_Handler
 
 	// 8 bytes available here
 .thumb_func
 .global Reset_Handler
-
 Reset_Handler:
-	ldr r2, data_init_start
-	ldr r3, data_start
-	ldr r4, data_end
-	b 2b // branch to cmp first and escape from scattered space
+	ldr r5, data_init_start
+	ldr r2, data_start
+	ldr r3, data_end
+	b 1b // branch to cmp first and escape from scattered space
 
 	.long PendSV_Handler
 	.long SysTick_Handler
@@ -100,16 +114,21 @@ data_end:
 	.long TIM3_IRQHandler
 
 	// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
-4:	stmia r3!, {r0}
-5:	cmp r3, r5
+4:	stmia r2!, {r0}
+3:	cmp r2, r4
 	bne 4b
-	b 6b
+	b 5b  // branch to cmp first and escape from scattered space
 
 	.long TIM14_IRQHandler
 
 	// 4 bytes available here // TIM15_IRQHandler on x8
-3:	movs r0, #0
-	b 5b // branch to cmp first and escape from scattered space
+.balign 4
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
+init_array_end:
+	.long __init_array_end
+#else
+	.long 0
+#endif
 
 	.long TIM16_IRQHandler
 	.long TIM17_IRQHandler

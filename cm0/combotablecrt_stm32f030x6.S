@@ -4,7 +4,6 @@
  * License: CC0                                                              *
  *****************************************************************************/
 
-
 //assumptions:
 // - initialized sections are 4 byte aligned (init in 4 byte steps)
 // - .bss is right after .data in RAM
@@ -70,7 +69,6 @@ vectors:
 	// 8 bytes available here
 .thumb_func
 .global Reset_Handler
-
 Reset_Handler:
 	ldr r5, data_init_start
 	ldr r2, data_start
@@ -116,7 +114,6 @@ data_end:
 	.long TIM3_IRQHandler
 
 	// 8 bytes available here // TIM6_IRQHandler on x8 + TIM7_IRQHandler on xC
-
 4:	stmia r2!, {r0}
 3:	cmp r2, r4
 	bne 4b

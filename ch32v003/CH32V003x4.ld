@@ -46,7 +46,7 @@ SECTIONS
 		__text_end__ = .;
 	} > FLASH
 
-	/*.data LMA must be before before constructors*/
+	/* .data LMA must be placed before before static constructors */
 	.data : ALIGN(4) {
 		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)

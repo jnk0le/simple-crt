@@ -1,9 +1,15 @@
 /*****************************************************************************
- * cortex-m0 minimum startup code                                            *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * universal cortex-m0 minimum startup code                                  *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
+
+//assumptions:
+// - initialized sections are 4 byte aligned (init in 4 byte steps)
+// - .bss is right after .data in RAM
+// - .preinit_array is right after .data LMA in FLASH
+// - .init_array is right after .preinit_array
+// - .fini_array is right after .init_array
 
 .syntax unified
 .thumb
@@ -11,49 +17,71 @@
 .text
 .thumb_func
 .global Reset_Handler
-.align 2
+.balign 2
+
+	// general allocation strategy:
+	// r0 - tmp
+	// r2 - working mem ptr (.data + .bss)
+	// r3 - .data final condition
+	// r4 - .bss final condition
+	// r5 - LMA data
+	// r6 - final cond for static initializers
 
 Reset_Handler:
 	adr r0, mem_init_symbols
-	ldmia r0!, {r2,r3,r4,r5}
 
-	b 2f // section size is not known during compilation so it have to be used in case of empty section
-	nop // padding for literal table, align both loops entry to 4 bytes
-	
-1:	ldmia r2!, {r0}
-	stmia r3!, {r0}
-2:	cmp r3, r4
+#if defined(__CRT_NO_STATIC_INITIALIZERS)
+	ldmia r0!, {r2-r5}
+#else
+	#if !defined(__CRT_NORETURN_FROM_MAIN)
+		ldmia r0!, {r2-r7}
+	#else
+		ldmia r0!, {r2-r6}
+	#endif
+#endif
+
+	b 2f // need to skip in case of empty section
+1:	ldmia r5!, {r0}
+	stmia r2!, {r0}
+2:	cmp r2, r3
 	bne 1b
 
-	movs r0, #0
+	movs r1, #0
 
-	// reuse __data_end__ in r3 as __bss_start__
-	// .bss have to be placed right after the .data section
-
-	b 2f // section size is not known during compilation so it have to be used in case of empty section
-1:	stmia r3!, {r0}
-2:	cmp r3, r5
+	b 2f // need to skip in case of empty section
+1:	stmia r2!, {r1}
+2:	cmp r2, r4
 	bne 1b
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
-	// newlib implementation doesn't work with -nostartfiles
-	//bl __libc_init_array
-	bl __run_init_array
+	b 2f // need to skip in case of empty section
+1:	ldmia r5!, {r0}
+	blx r0
+2:	cmp r5, r6
+	bne 1b
 #endif
 
 	bl main
 
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)&&!defined(__CRT_NORETURN_FROM_MAIN)
-	//bl __libc_fini_array
-	bl __run_fini_array
-#endif
+#if !defined(__CRT_NORETURN_FROM_MAIN)
+	// main returned, r5, r7 are preserved
+
+	b 2f // need to skip in case of empty section
+1:	ldmia r5!, {r0}
+	blx r0
+2:	cmp r5, r7
+	bne 1b
 
 	b .
-	
-.align 2
+#endif
 
+.balign 4
 mem_init_symbols:
-	.long __data_init_start__ // r2
-	.long __data_start__ // r3
-	.long __data_end__ // r4
-	.long __bss_end__ // r5
+	.long __data_start__ // r2
+	.long __data_end__ // r3
+	.long __bss_end__ // r4
+	.long __data_init_start__ // r5
+	.long __init_array_end // r6
+#if !defined(__CRT_NORETURN_FROM_MAIN)
+	.long __fini_array_end // r7
+#endif

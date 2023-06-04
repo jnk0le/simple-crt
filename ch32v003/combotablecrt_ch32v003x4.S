@@ -12,16 +12,17 @@
 // - __global_pointer$ == __data_start__ == __ram_start__
 // - .bss is right after .data in RAM
 // - .preinit_array is right after .data LMA in FLASH
-// - .init_array is right after .preinit_array in FLASH
+// - .init_array is right after .preinit_array
 // - RAM is <= 2KiB
 // - main() doesn't return
-// - vectored interrupts with HPE and preemtion enabled
+// - vectored interrupts with HPE and preemption enabled
+// - static destructors are not used
 
 .section .isr_vector_table, "ax", %progbits
 .option push
 .option norelax
 
-	// general allocation strategy
+	// general allocation strategy:
 	// s0 - LMA data
 	// s1 - final cond
 	// a0 - tmp
@@ -120,7 +121,7 @@ __irq_vector_table:
 
 	c.mv gp, s1 // __global_pointer$ @ __bss_end__
 
-#ifndef __CRT_NO_STATIC_INITIALIZERS
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	// call static constructors (c++ and attribute ones), only s0, s1 are preserved
 	c.lw s1, 52(a2) // __init_array_end // of course it doesn't accept labels
 

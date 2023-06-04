@@ -1,7 +1,6 @@
 /*****************************************************************************
  * Minimal linker script for STM32F030xC                                     *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
 
@@ -50,6 +49,15 @@ SECTIONS
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
 	} > FLASH
 
+	/* .data LMA must be placed before before static constructors */
+	.data : ALIGN(4) {
+		__data_start__ = .;
+		*(.data .data.* .gnu.linkonce.d.*)
+		__data_end__ = .;
+	} > RAM AT > FLASH
+
+	__data_init_start__ = LOADADDR(.data);
+
 	.tables : ALIGN(4) {
 		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*)))
@@ -68,14 +76,6 @@ SECTIONS
 		*(.ARM.exidx* .gnu.linkonce.armexidx*)
 		*(.eh_frame*)
 	} > FLASH
-
-	.data : ALIGN(4) {
-		__data_start__ = .;
-		*(.data .data.* .gnu.linkonce.d.*)
-		__data_end__ = .;
-	} > RAM AT > FLASH
-
-	__data_init_start__ = LOADADDR(.data);
 
 	.bss : ALIGN(4) {
 		__bss_start__ = .;

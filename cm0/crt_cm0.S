@@ -33,10 +33,10 @@ Reset_Handler:
 #if defined(__CRT_NO_STATIC_INITIALIZERS)
 	ldmia r0!, {r2-r5}
 #else
-	#if !defined(__CRT_NORETURN_FROM_MAIN)
-		ldmia r0!, {r2-r7}
-	#else
+	#if defined(__CRT_NORETURN_FROM_MAIN)
 		ldmia r0!, {r2-r6}
+	#else
+		ldmia r0!, {r2-r7}
 	#endif
 #endif
 
@@ -53,7 +53,7 @@ Reset_Handler:
 2:	cmp r2, r4
 	bne 1b
 
-#ifndef __CRT_NO_STATIC_INITIALIZERS
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	b 2f // need to skip in case of empty section
 1:	ldmia r5!, {r0}
 	blx r0

@@ -51,6 +51,7 @@ SECTIONS
 		__data_end__ = .;
 	} > RAM AT > FLASH
 
+	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
 
 	.tables : ALIGN(4) {
@@ -78,6 +79,8 @@ SECTIONS
 		*(COMMON)
 		__bss_end__ = .;
 	} > RAM
+	
+	__bss_size__ = SIZEOF(.bss);
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		__noinit_start__ = .;

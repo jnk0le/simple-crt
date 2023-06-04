@@ -31,10 +31,12 @@ compiler flags (project preporties -> preprocessor -> defined symbols (-D))
 Those macros will not remove constructors/destructors and init/fini arrays (have to be KEEPt in linker
 to work at all when used)
 
-To properly print sizes of each memory segment (e.g. stm32h7)
+To properly print real sizes of each memory segment (e.g. stm32h7)
 ```
 -Wl,--print-memory-usage
 ```
+
+NOTE: currently gcc seems to count `preinit/init/fini_array` sizes towards `.data` section 
 
 Virgin openocd+gdb doesn't support live variable view and SWO/ITM.
 

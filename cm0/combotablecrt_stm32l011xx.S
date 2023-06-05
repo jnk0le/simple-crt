@@ -51,13 +51,13 @@ vectors:
 	bl main
 	
 	// padding
-	nop
+	b .
 	nop
 #else
 5:	bl main
 	
 	// padding
-	nop
+	b .
 	nop
 	nop
 	nop

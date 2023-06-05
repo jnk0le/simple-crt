@@ -81,7 +81,9 @@ mem_init_symbols:
 	.long __data_end__ // r3
 	.long __bss_end__ // r4
 	.long __data_init_start__ // r5
+#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	.long __init_array_end // r6
 #if !defined(__CRT_NORETURN_FROM_MAIN)
 	.long __fini_array_end // r7
+#endif
 #endif

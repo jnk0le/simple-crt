@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 //assumptions:
-// - application is starts at 0x00000000
+// - application starts at 0x00000000
 // - reset handler is entered by system reset only
 // - only the "system" botloader can be used (the one at 0x1ffff000)
 // - initialized sections are 4 byte aligned (init in 4 byte steps)

@@ -155,7 +155,7 @@
 	extern const int __main_stack_end__;   // import main stack end (from linker script)
 	extern void Reset_Handler(void);       // import the address of Reset_Handler()
 
-	void (*const vectors[])(void) __attribute__((used, section(".isr_vector_table"))) =
+	void (*const __irq_vector_table[])(void) __attribute__((used, section(".isr_vector_table"))) =
 	{
 		(void (*)(void))&__main_stack_end__,
 		Reset_Handler,

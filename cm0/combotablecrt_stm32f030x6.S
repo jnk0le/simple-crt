@@ -24,8 +24,8 @@
 	// r5 - LMA data
 	// r6 - final cond for static initializers
 
-.global vectors // consistent with c version, should not compile if xxx_vectors.c gets also pulled in
-vectors:
+.global __irq_vector_table // consistent with c version, should not compile if xxx_vectors.c gets also pulled in
+__irq_vector_table:
 
 	.long __main_stack_end__
 	.long Reset_Handler

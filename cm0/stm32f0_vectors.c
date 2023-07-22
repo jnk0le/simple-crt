@@ -1,7 +1,6 @@
 /*****************************************************************************
  * STM32F0 vector table definitions                                          *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
 

@@ -1,7 +1,6 @@
 /*****************************************************************************
  * STM32F1 vector table definitions                                          *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
 
@@ -43,7 +42,6 @@
 	void __attribute__ ((weak, alias("Default_Handler"))) DMA1_Channel7_IRQHandler(void);
 
 #if defined(STM32F10X_LD)
-
 	void __attribute__ ((weak, alias("Default_Handler"))) USB_HP_CAN1_TX_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) USB_LP_CAN1_RX0_IRQHandler(void);
 	void __attribute__ ((weak, alias("Default_Handler"))) CAN1_RX1_IRQHandler(void);

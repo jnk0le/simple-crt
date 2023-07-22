@@ -26,6 +26,7 @@
 	// r4 - .bss final condition
 	// r5 - LMA data
 	// r6 - final cond for static initializers
+	// r7 - final cond for static deinitializers
 
 Reset_Handler:
 	adr r0, mem_init_symbols

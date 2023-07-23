@@ -58,7 +58,7 @@ Reset_Handler:
 
 #ifndef __CRT_NO_STATIC_INITIALIZERS
 	b 2f // need to skip in case of empty section
-1:	ldmia r5!, {r0} // not pipelined
+1:	ldmia r5!, {r0}
 	blx r0
 2:	cmp r5, r6
 	bne 1b

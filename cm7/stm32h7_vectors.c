@@ -1,7 +1,6 @@
 /*****************************************************************************
- * STM32H7 vector table definitions                                       *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * STM32H7 vector table definitions                                          *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
 

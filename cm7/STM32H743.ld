@@ -1,7 +1,6 @@
 /*****************************************************************************
  * Minimal linker script for STM32H743                                       *
- * Author : jnk0le@hotmail.com                                               *
- *          https://github.com/jnk0le                                        *
+ * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
 
@@ -71,18 +70,41 @@ SECTIONS
 
 	.text : ALIGN(4) {
 		__text_start__ = .;
-		
 		*(.text .text.* .gnu.linkonce.t.*)
-		
-		KEEP(*(.init))
-		KEEP(*(.fini))
-		
 		__text_end__ = .;
 	} > FLASH
 
 	.rodata : ALIGN(4) {
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
 	} > FLASH
+
+	.data : ALIGN(8) {
+		__data_start__ = .;
+		*(.data .data.* .gnu.linkonce.d.*)
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
+		__data_end__ = .;
+	} > DTCM AT > FLASH
+
+	__data_size__ = SIZEOF(.data);
+	__data_init_start__ = LOADADDR(.data);
+
+	/* allocate space for vector table that needs to be
+	   copied and relocated (VTOR offset) by software */
+	.itcm_isr_vectors (NOLOAD) : ALIGN(8) {
+		__itcm_isr_vector_table_start__ = .;
+		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
+		__itcm_isr_vector_table_end__ = .;
+	} > ITCM
+
+	.itcm_text : ALIGN(8) {
+		__itcm_text_start__ = .;
+		*(.itcm.text .itcm.text.*)
+		. = ALIGN(8); /* will copy it by 8 bytes per round */
+		__itcm_text_end__ = .;
+	} > ITCM AT > FLASH
+
+	PROVIDE(__itcm_text_init_start__ = LOADADDR(.itcm_text));
 
 	.tables : ALIGN(4) {
 		__preinit_array_start = .;
@@ -103,15 +125,6 @@ SECTIONS
 		*(.eh_frame*)
 	} > FLASH
 
-	.data : ALIGN(8) {
-		__data_start__ = .;
-		*(.data .data.* .gnu.linkonce.d.*)
-		. = ALIGN(8); /* will copy it by 8 bytes per round */
-		__data_end__ = .;
-	} > DTCM AT > FLASH
-
-	__data_init_start__ = LOADADDR(.data);
-
 	.bss : ALIGN(8) {
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
@@ -119,6 +132,8 @@ SECTIONS
 		. = ALIGN(8); /* will clear it by 8 bytes per round */
 		__bss_end__ = .;
 	} > DTCM
+
+	__bss_size__ = SIZEOF(.bss);
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		__noinit_start__ = .;
@@ -130,27 +145,9 @@ SECTIONS
 		__main_stack_start__ = .;
 	} > DTCM
 
-	__main_stack_end__ =  __dtcm_end__;
+	__main_stack_end__ = __dtcm_end__;
 	
 	ASSERT((__main_stack_start__ + __min_stack_size__) <= __dtcm_end__, "not enough space for stack")
-
-	/* allocate space for vector table that needs to be
-	   copied and relocated (VTOR offset) by software */
-	.itcm_isr_vectors (NOLOAD) : ALIGN(8) {
-		__itcm_isr_vector_table_start__ = .;
-		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
-		. = ALIGN(8); /* will copy it by 8 bytes per round */
-		__itcm_isr_vector_table_end__ = .;
-	} > ITCM
-
-	.itcm_text : ALIGN(8) {
-		__itcm_text_start__ = .;
-		*(.itcm.text .itcm.text.*)
-		. = ALIGN(8); /* will copy it by 8 bytes per round */
-		__itcm_text_end__ = .;
-	} > ITCM AT > FLASH
-
-	PROVIDE(__itcm_text_init_start__ = LOADADDR(.itcm_text));
 
 	.D1_noinit (NOLOAD) : ALIGN(4) {
 		__d1_noinit_start__ = .;

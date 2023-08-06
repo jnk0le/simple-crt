@@ -5,11 +5,11 @@
  *****************************************************************************/
 
 //assumptions:
-// - application starts at 0x00000000
+// - application starts at 0x00000000 (default after proper system reset)
 // - reset handler is entered by system reset only
 // - only the "system" botloader can be used (the one at 0x1ffff000)
 // - initialized sections are 4 byte aligned (init in 4 byte steps)
-// - __global_pointer$ == __data_start__ == __ram_start__
+// - __global_pointer$ == __bss_end__ (covers entire SRAM)
 // - .bss is right after .data in RAM
 // - .preinit_array is right after .data LMA in FLASH
 // - .init_array is right after .preinit_array

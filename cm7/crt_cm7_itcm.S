@@ -18,10 +18,9 @@
 .syntax unified
 .thumb
 .text
-.balign 4
 
-.thumb_func
 .global Reset_Handler
+.balign 4
 Reset_Handler:
 	adr r0, mem_init_symbols
 

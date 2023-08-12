@@ -15,7 +15,7 @@
 // - .init_array is right after .preinit_array
 // - RAM is <= 2KiB
 // - main() doesn't return
-// - vectored interrupts with HPE and preemption enabled
+// - vectored interrupts with HPE and preemption enabled (can be changed later)
 // - static destructors are not used
 
 .section .isr_vector_table, "ax", %progbits
@@ -31,7 +31,7 @@
 
 .global __irq_vector_table
 __irq_vector_table:
-	// "system" irqs consistent with stock defs, which are mostly copypaste from arm
+	// "system" irqs consistent with wch defs, which are mostly copypaste from arm
 	// 8 bytes here
 
 	// reset state of `mtvec` is 0 so it can be recycled for zeroing a2

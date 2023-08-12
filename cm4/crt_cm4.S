@@ -13,11 +13,7 @@
 
 .syntax unified
 .thumb
-
 .text
-.thumb_func
-.global Reset_Handler
-.balign 4
 
 	// general allocation strategy:
 	// r0 - tmp
@@ -29,6 +25,8 @@
 	// r6 - final cond for static initializers
 	// r7 - final cond for static deinitializers
 
+.global Reset_Handler
+.balign 4
 Reset_Handler:
 	adr r0, mem_init_symbols
 

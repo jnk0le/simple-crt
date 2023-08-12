@@ -26,7 +26,6 @@
 
 .global __irq_vector_table // consistent with c version, should not compile if xxx_vectors.c gets also pulled in
 __irq_vector_table:
-
 	.long __main_stack_end__
 	.long Reset_Handler
 	.long NMI_Handler

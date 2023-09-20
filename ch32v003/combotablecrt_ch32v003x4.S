@@ -69,10 +69,9 @@ __irq_vector_table:
 	// It is a rare case where the entire stack space is not going to be used anyway.
 	// The alternative is addi + c.addi but that will always be 6 byte sequence due to the
 	// way, linker symbols work (limited/no compiler optimizations, cannot conditionally compile on them)
-.option push
-.option norelax // gets reduced to li without this
+.option norvc
 	addi sp, s1, %lo(__ch32v003_bsstostack_offset__)
-.option pop
+.option rvc
 
 	c.j 4f // zero skip in bss loop directly
 

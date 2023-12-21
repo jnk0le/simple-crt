@@ -25,6 +25,7 @@
 	// r6 - final cond for static initializers
 	// r7 - final cond for static deinitializers
 
+.thumb_func
 .global Reset_Handler
 .balign 4
 Reset_Handler:

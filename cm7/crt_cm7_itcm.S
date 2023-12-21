@@ -19,6 +19,7 @@
 .thumb
 .text
 
+.thumb_func
 .global Reset_Handler
 .balign 4
 Reset_Handler:

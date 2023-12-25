@@ -8,7 +8,7 @@ Startup code initializes `mtvec` to vectored address entries and `INTSYSCR` to e
 interrupt nesting as well as HPE.
 To properly utilize HPE feature, you need a custom build toolchain with `"WCH-Interrupt-fast"` attribute.
 e.g. https://github.com/hydrausb3/riscv-none-elf-gcc-xpack/releases/tag/12.2.0-1 \
-Otherwise you can use regular `__attribute__((interrupt))`, or disable HPE in `INTSYSCR` later.
+Otherwise you can use regular `__attribute__((interrupt))` (can disable HPE in `INTSYSCR` later).
 
 The best case scenario would be "standarization" of something like
 [prestacked annotation](https://github.com/jnk0le/riscv-total-embedded/blob/master/riscv-total-embedded.adoc#prestacked-annotation)

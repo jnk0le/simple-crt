@@ -14,7 +14,7 @@ The best case scenario would be "standarization" of something like
 [prestacked annotation](https://github.com/jnk0le/riscv-total-embedded/blob/master/riscv-total-embedded.adoc#prestacked-annotation)
 so outdated custom builds of toolchains are no longer needed.
 
-Debugging requires custom fork of openocd. e.g. https://github.com/jnk0le/openocd-wch/releases/tag/29042023 (for windows builds)
+Debugging requires custom fork of openocd. e.g. https://github.com/jnk0le/openocd-wch/releases/ (for windows builds)
 
 ### combotable
 

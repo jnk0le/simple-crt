@@ -122,7 +122,11 @@ __irq_vector_table:
 	c.addi a1, 4
 4:	bne a1, s1, 5b
 
+
+.option push
+.option norelax
 	c.mv gp, s1 // __global_pointer$ @ __bss_end__
+.option pop
 
 #if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	// call static constructors (c++ and attribute ones), only s0, s1 are preserved

@@ -97,3 +97,16 @@ int _lseek(int file, int ptr, int dir)
 	(void)dir; // unused
 	return 0;
 }
+
+int _getpid(void);
+int _getpid(void)
+{
+	return 1;
+}
+
+void _kill(int pid);
+void _kill(int pid)
+{
+	(void)pid;
+	while(1) { asm volatile("":::"memory"); }
+}

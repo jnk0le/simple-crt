@@ -58,6 +58,7 @@ SECTIONS
 	.data : ALIGN(4) {
 		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)
+		. = ALIGN(4);
 		__data_end__ = .;
 	} > RAM AT > FLASH
 
@@ -87,6 +88,7 @@ SECTIONS
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
+		. = ALIGN(4);
 		__bss_end__ = .;
 	} > RAM
 
@@ -109,6 +111,7 @@ SECTIONS
 	/*.ccm_data : ALIGN(4) {
 		__ccm_data_start__ = .;
 		*(.ccm.data .ccm.data.*)
+		. = ALIGN(4);
 		__ccm_data_end__ = .;
 	} > CCM AT > FLASH
 	
@@ -117,6 +120,7 @@ SECTIONS
 	.ccm_bss : ALIGN(4) {
 		__ccm_bss_start__ = .;
 		*(.ccm.bss .ccm.bss.*)
+		. = ALIGN(4);
 		__ccm_bss_end__ = .;
 	} > CCM
 	*/

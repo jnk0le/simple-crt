@@ -51,6 +51,7 @@ SECTIONS
 		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)
 		*(.sdata .sdata.* .gnu.linkonce.s.*)
+		. = ALIGN(4);
 		__data_end__ = .;
 	} > RAM AT > FLASH
 
@@ -79,6 +80,7 @@ SECTIONS
 		*(.sbss .sbss.* .gnu.linkonce.sb.*)
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
+		. = ALIGN(4);
 		__bss_end__ = .;
 	} > RAM
 

@@ -36,12 +36,7 @@ SECTIONS
 
 	.text : ALIGN(4) {
 		__text_start__ = .;
-		
 		*(.text .text.* .gnu.linkonce.t.*)
-		
-		KEEP(*(.init))
-		KEEP(*(.fini))
-		
 		__text_end__ = .;
 	} > FLASH
 
@@ -53,6 +48,7 @@ SECTIONS
 	.data : ALIGN(4) {
 		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)
+		. = ALIGN(4);
 		__data_end__ = .;
 	} > RAM AT > FLASH
 
@@ -82,6 +78,7 @@ SECTIONS
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
+		. = ALIGN(4);
 		__bss_end__ = .;
 	} > RAM
 

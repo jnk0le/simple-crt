@@ -54,9 +54,9 @@ Reset_Handler:
 #endif
 
 #if defined (__VFP_FP__) && !defined(__SOFTFP__)
-	ldr r0, [r6] // cannot be pipelined after literal loads anyway
+	ldr r0, [r1] // cannot be pipelined after literal loads anyway
 	orr r0, #(0b11 << 20)|(0b11 << 22) // enable CP10 and CP11 coprocessors (FPU)
-	str r0, [r6]
+	str r0, [r1]
 #endif
 
 	b 2f // need to skip in case of empty section

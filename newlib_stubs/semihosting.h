@@ -41,7 +41,9 @@
 	static inline int call_host(int reason, void* param);
 	static inline int call_host(int reason, void* param)
 	{
-	#if defined(__ARM_ARCH_6M__)||defined(__ARM_ARCH_7M__)||defined(__ARM_ARCH_7EM__)
+	#if defined(__ARM_ARCH_6M__)||defined(__ARM_ARCH_7M__)||defined(__ARM_ARCH_7EM__)|| \
+		defined(__ARM_ARCH_8M_BASE__)||defined(__ARM_ARCH_8M_MAIN__)||defined(__ARM_ARCH_8_1M_MAIN__)
+
 		register long result asm("r0") = reason;
 		register void* r1 asm("r1") = param;
 

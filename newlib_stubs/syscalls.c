@@ -18,7 +18,7 @@ __attribute__((weak)) caddr_t _sbrk(int incr)
 
 	tmp_address = heap_top;
 
-#ifdef __ARM_ARCH_6M__ // cortex-m0 requires word alignment
+#if defined(__ARM_ARCH_6M__)||defined(__ARM_ARCH_8M_BASE__) // require word alignment
 	incr = ((incr+3) & ~3);
 #endif
 

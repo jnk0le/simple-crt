@@ -104,7 +104,7 @@ SECTIONS
 		__itcm_text_end__ = .;
 	} > ITCM AT > FLASH
 
-	PROVIDE(__itcm_text_init_start__ = LOADADDR(.itcm_text));
+	__itcm_text_init_start__ = LOADADDR(.itcm_text);
 
 	.tables : ALIGN(4) {
 		__preinit_array_start = .;

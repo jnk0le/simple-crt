@@ -10,7 +10,7 @@ You will need "renesas flash programmer" tool:
 
 https://www.renesas.com/us/en/software-tool/renesas-flash-programmer-programming-gui#overview
 
-It is of course broken similarly as typical chinese software.\
+Current version is of course bugged.\
 Device has to be reset after each operation (e.g. flashing or reading) or you will
 get "Error(E3000105): The device is not responding." on subsequent action/access attempt
 

@@ -1,4 +1,5 @@
-Cursed RA8 startup files, designated for openocd debugging which is intentionally unsupported by Renesas.
+Cursed RA8 startup files, designated for openocd debugging which is intentionally unsupported by Renesas
+due to decision of their "marketing team".\
 Supports RA8D1 (aka R7FA8D1BHEC aka A8D1BHEC) chip, should work also for RA8M1 and RA8T1 and variants.
 
 As in openocd, there is no flash loader for RA8, only preloading code to SRAM is possible.
@@ -18,8 +19,9 @@ If you have already created "project" then connection is established by selectin
 flashing (start button) or reading device information etc.
 
 First step is to libarate the uC from any present applications (e.g. RT-thread vision board has such)
-and reset it to factory default. Otherwise your debugged application/debugging will freeze, usually at
-`main()` breakpoint or enter undebuggable hardfault.
+and reset it to factory default.\
+Otherwise your debugged application/debugging will freeze, usually at `main()`
+breakpoint or enter undebuggable hardfault.
 
 To do this you need to select "Initialize Device" in "Target Device" menu
 

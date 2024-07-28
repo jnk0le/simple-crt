@@ -1,6 +1,6 @@
 Cursed RA8 startup files, designated for openocd debugging which is intentionally unsupported by Renesas
 due to decision of their "marketing team".\
-Supports RA8D1 (aka R7FA8D1BHEC aka A8D1BHEC) chip, should work also for RA8M1 and RA8T1 and variants.
+Supports RA8D1 (aka R7FA8D1BHEC aka A8D1BHEC) chip, should work also for RA8M1, RA8T1 and variants.
 
 As in openocd, there is no flash loader for RA8, only preloading code to SRAM is possible.
 

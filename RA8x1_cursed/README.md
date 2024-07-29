@@ -25,7 +25,7 @@ breakpoint or enter undebuggable hardfault.
 
 To do this you need to select "Initialize Device" in "Target Device" menu
 
-Now device is in fatory state in which the debugging is (of course) not possible.\ 
+Now device is in fatory state in which the debugging is (of course) not possible.\
 To unbrick, flash in the `RA8_factory_unbrick.hex` file using the same tool.
 
 ## idau BS

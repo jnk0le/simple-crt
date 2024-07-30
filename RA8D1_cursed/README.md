@@ -13,7 +13,7 @@ https://www.renesas.com/us/en/software-tool/renesas-flash-programmer-programming
 Connect it through USB ("USB-OTG" port on RT-Thread vision board) or SCI (uart).
 
 Current version is of course bugged.\
-Device has to be reset after each operation (e.g. flashing or reading) or you will
+Target device has to be reset after each operation (e.g. flashing or reading) or you will
 get "Error(E3000105): The device is not responding." on subsequent action/access attempt
 
 After resetting you need to hold BOOT key until connected by the tool.\

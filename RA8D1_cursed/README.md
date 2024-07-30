@@ -33,7 +33,7 @@ To unbrick, flash in the `RA8_factory_unbrick.hex` file using the same tool.
 ## IDAU
 
 RT-Thread vison board comes with all areas programmed to flat mode (all secure). I belive
-that virgin chips also come with flat mode.
+that the virgin chips also come with flat mode.
 
 Therefore no action is required in those cases.
 

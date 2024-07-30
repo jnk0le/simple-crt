@@ -76,7 +76,7 @@ It is recommended to use "Debug in RAM" option (in eclipse: Debug Configurations
 
 ## notes
 
-- expected `$_CPUTAPID` is ignored by openocd, debug session reads "SWD DPIDR 0x6ba02477"
+- expected `$_CPUTAPID` is ignored by openocd, debug session reads `SWD DPIDR 0x6ba02477`
 
 - debugger has issues with reading DTCM/ITCM (all aliases), only disassembler shows something in there
 

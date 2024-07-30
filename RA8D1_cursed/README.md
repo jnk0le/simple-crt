@@ -43,8 +43,7 @@ https://www.mouser.com/pdfDocs/r01an7087eu0100-ra8-mcu-quick-design-guide.pdf
 
 To read current idau zones you need to select "Read Flash Options" in "Target Device" menu.
 
-To program new zones,
-
+To program new zones,\
 in "Flash Options" tab, in "Boundary" set:
 - "Set Option" to "Set"
 - "Code Secure Size [KB]" to "16352"

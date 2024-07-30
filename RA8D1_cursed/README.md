@@ -22,7 +22,7 @@ flashing (start button) or reading device information etc.
 
 First step is to libarate the uC from any present applications (e.g. RT-Thread vision board has such)
 and reset it to factory default.\
-Otherwise your debugged application/debugging will freeze, usually at `main()`
+Otherwise your application/debugging will freeze, usually at `main()`
 breakpoint or enter undebuggable hardfault.
 
 To do this you need to select "Initialize Device" in "Target Device" menu
@@ -30,9 +30,31 @@ To do this you need to select "Initialize Device" in "Target Device" menu
 Now device is in fatory state in which the debugging is (of course) not possible.\
 To unbrick, flash in the `RA8_factory_unbrick.hex` file using the same tool.
 
-## idau BS
+## IDAU
 
-TBD, printf helloworld works so far
+RT-Thread vison board comes with all areas programmed to flat mode (all secure). I belive
+that virgin chips also come with flat mode.
+
+Therefore no action is required in those cases.
+
+It seems that the IDAU is more limited than the one on RA6 as there is only code and data secure area (no SRAM, or NSC),
+even though all datasheets talk about SRAM and peripheral IDAU regions.
+https://www.mouser.com/pdfDocs/r01an7087eu0100-ra8-mcu-quick-design-guide.pdf
+
+To read current idau zones you need to select "Read Flash Options" in "Target Device" menu.
+
+To program new zones,
+
+in "Flash Options" tab, in "Boundary" set:
+- "Set Option" to "Set"
+- "Code Secure Size [KB]" to "16352"
+- "Data Secure Size [KB]" to "63"
+
+then in "Operation Settings" tab, "Command" area:
+- set "Program Flash Options"
+- uncheck everything else
+
+then in "Operation" tab click start.
 
 ## trustzone support
 

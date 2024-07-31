@@ -85,4 +85,4 @@ It is recommended to use "Debug in RAM" option (in eclipse: Debug Configurations
 - `R7FA8D1BH.h` file has `IRQn_Type` typedef readded, (only standard ARM irqs), stock renesans headers are
 missing it which causes errors.
 
-- svd files can be extracted from renesans DFP packages
+- svd files can be extracted from renesas DFP packages

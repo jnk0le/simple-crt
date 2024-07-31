@@ -86,3 +86,7 @@ It is recommended to use "Debug in RAM" option (in eclipse: Debug Configurations
 missing it which causes errors.
 
 - svd files can be extracted from renesas DFP packages
+
+- on cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have to be enabled to achieve advertised performance.
+Current startup code enables only FPU/helium.\ 
+https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips

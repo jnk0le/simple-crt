@@ -80,15 +80,15 @@ On cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have 
 Current startup code enables only FPU/helium.\ 
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
 
-### errata 3190818 and 3175626
+### errata `3190818` and `3175626`
 
 Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted 3x, with some
 garbage 3rd time, then hardfault)
 
-Particularly fix for 3175626 must be applied as execution from sram won't work without it.
+Particularly fix for `3175626` must be applied as execution from sram won't work without it.
 
-Applying 3190818 didn't make observable difference in my case.\
-Same fix is applied to another erratum (2705514).
+Applying fix for `3190818` didn't make observable difference in my case.\
+Same fix is applied to another erratum (`2705514`).
 
 Renesas errata is written in chinglish, so condition "b" and "c" mean that SRAM banks cannot be simultaneously
 acccessed by core and DMA when using writeback cache.

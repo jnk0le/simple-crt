@@ -95,8 +95,6 @@ acccessed by core and DMA.
 
 ```
 	MEMSYSCTL->MSCR |= MEMSYSCTL_MSCR_FORCEWT_Msk; // errata 3175626
-	__DSB();
-	__ISB();
 	ICB->ACTLR |= (1 << 16); // errata 3190818
 	__DSB();
 	__ISB();

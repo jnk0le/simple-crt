@@ -94,4 +94,6 @@ https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blo
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted form https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
 
 - openocd (at least current cfg script) can't clear hardfult/lockup (pc = 0xeffffffe) when loading new application. 
-In such case you need to power cycle the chip. 
+In such case you need to power cycle the chip.
+
+- Enabling D cache breaks program control flow (e.g. one printf executed 3x, with some garbage 3rd time, then hardfault)

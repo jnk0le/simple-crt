@@ -90,3 +90,5 @@ missing it which causes errors.
 - on cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have to be enabled to achieve advertised performance.
 Current startup code enables only FPU/helium.\ 
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
+
+- to debug NVIC registers use `Generic_V8M.svd` file (extracted form https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)

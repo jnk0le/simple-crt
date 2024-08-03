@@ -74,6 +74,38 @@ in eclipse (Debug Configurations -> Startup)
 
 It is recommended to use "Debug in RAM" option (in eclipse: Debug Configurations -> Startup)
 
+## cortex-m85 setup
+
+On cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have to be enabled to achieve advertised performance.
+Current startup code enables only FPU/helium.\ 
+https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
+
+### errata 3190818 and 3175626
+
+Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted 3x, with some
+garbage 3rd time, then hardfault)
+
+Particularly fix for 3175626 must be applied as execution from sram won't work without it.
+
+Applying 3190818 didn't make observable difference in my case.\
+Same fix is applied to another erratum (2705514).
+
+Renesas errata is written in chinglish, so condition "b" and "c" mean that SRAM banks cannot be simultaneously
+acccessed by core and DMA.
+
+```
+	MEMSYSCTL->MSCR |= MEMSYSCTL_MSCR_FORCEWT_Msk; // errata 3175626
+	__DSB();
+	__ISB();
+	ICB->ACTLR |= (1 << 16); // errata 3190818
+	__DSB();
+	__ISB();
+	SCB->CCR |= (SCB_CCR_IC_Msk|SCB_CCR_DC_Msk);
+	__DSB();
+	__ISB();
+```
+
+
 ## notes
 
 - expected `$_CPUTAPID` is ignored by openocd, debug session reads `SWD DPIDR 0x6ba02477`
@@ -87,13 +119,8 @@ missing it which causes errors.
 
 - svd files can be extracted from renesas DFP packages
 
-- on cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have to be enabled to achieve advertised performance.
-Current startup code enables only FPU/helium.\ 
-https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
+- to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
 
-- to debug NVIC registers use `Generic_V8M.svd` file (extracted form https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
+- openocd (at least with current cfg script) can't clear hardfault/lockup (pc = 0xeffffffe)
+when loading new application. In such case you need to power cycle the chip.
 
-- openocd (at least current cfg script) can't clear hardfult/lockup (pc = 0xeffffffe) when loading new application. 
-In such case you need to power cycle the chip.
-
-- Enabling D cache breaks program control flow (e.g. one printf executed 3x, with some garbage 3rd time, then hardfault)

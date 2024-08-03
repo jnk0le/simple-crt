@@ -91,7 +91,7 @@ Applying 3190818 didn't make observable difference in my case.\
 Same fix is applied to another erratum (2705514).
 
 Renesas errata is written in chinglish, so condition "b" and "c" mean that SRAM banks cannot be simultaneously
-acccessed by core and DMA.
+acccessed by core and DMA when using writeback cache.
 
 ```
 	MEMSYSCTL->MSCR |= MEMSYSCTL_MSCR_FORCEWT_Msk; // errata 3175626

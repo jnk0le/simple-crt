@@ -92,3 +92,6 @@ Current startup code enables only FPU/helium.\
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
 
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted form https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
+
+- openocd (at least current cfg script) can't clear hardfult/lockup (pc = 0xeffffffe) when loading new application. 
+In such case you need to power cycle the chip. 

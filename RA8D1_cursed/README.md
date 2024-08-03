@@ -120,6 +120,7 @@ missing it which causes errors.
 - svd files can be extracted from renesas DFP packages
 
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
+It's missing some bits and many descriptions are exactly inverse of actual behaviour.
 
 - openocd (at least with current cfg script) can't clear hardfault/lockup (pc = 0xeffffffe)
 when loading new application. In such case you need to power cycle the chip.

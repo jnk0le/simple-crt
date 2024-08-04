@@ -27,17 +27,17 @@ Reset_Handler:
 
 	// load irq handlers to itcm, as the gdb just resumes exec to sram
 	ldr r1, =__isr_vector_table_start__
-	ldr r2, =__isr_vector_table_end__
-	ldr r3, =__isr_vector_table_init_start__
+	//ldr r2, =__isr_vector_table_end__
+	//ldr r3, =__isr_vector_table_init_start__
 
 	ldr r5, =0xE000ED08 // SCB->VTOR
 	str r1, [r5]
 
-	b 2f
+	/*b 2f
 1:	ldr r0, [r3], #4
 	str r0, [r1], #4
 2:	cmp r1, r2
-	bne 1b
+	bne 1b*/
 
 	//copypaste from cm4
 

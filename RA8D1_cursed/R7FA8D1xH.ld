@@ -17,7 +17,8 @@ MEMORY
 	ITCM (rwx) : ORIGIN = 0x00000000, LENGTH = 64K
 	DTCM (rw) : ORIGIN = 0x20000000, LENGTH = 64K
 	
-	SRAM (rwx) : ORIGIN = 0x22000000, LENGTH = 896K
+	SRAM (rwx) : ORIGIN = 0x22000000, LENGTH = 896K - 1K
+	SRAM_vectors (rwx) : ORIGIN = 0x220dfc00, LENGTH = 1K
 	
 	/* SRAM is merged from 2 memory regions
 	SRAM_ECC    - 384k - 0x22000000
@@ -99,7 +100,7 @@ SECTIONS
 		__isr_vector_table_start__ = .;
 		KEEP(*(.isr_vector_table))
 		__isr_vector_table_end__ = .;
-	} > ITCM AT > SRAM
+	} > SRAM_vectors
 	
 	__isr_vector_table_init_start__ = LOADADDR(.data);
 

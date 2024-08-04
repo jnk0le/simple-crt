@@ -103,6 +103,9 @@ acccessed by core and DMA when using writeback cache.
 	__ISB();
 ```
 
+### other issues
+
+- irq vector table cannot be dispatched from itcm.
 
 ## notes
 
@@ -120,6 +123,6 @@ missing it which causes errors.
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
 It's missing some bits and many descriptions are exactly inverse of actual behaviour.
 
-- openocd (at least with current cfg script) can't clear hardfault/lockup (pc = 0xeffffffe)
+- openocd (at least with current cfg script) can't clear hardfault or lockup (pc = 0xeffffffe)
 when loading new application. In such case you need to power cycle the chip.
 

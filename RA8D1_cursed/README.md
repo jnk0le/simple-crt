@@ -128,8 +128,3 @@ missing it which causes errors.
 
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
 It's missing some bits and many descriptions are exactly inverse of actual behaviour.
-
-- openocd can't clear hardfault or lockup (pc = 0xeffffffe), nor recover from normal execution (semihosting bkpt??)
-when loading new application. In such case you need to power cycle the chip.
-It's observed as crash at the main() breakpoint.
-

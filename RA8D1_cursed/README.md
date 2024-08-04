@@ -89,7 +89,8 @@ If stack is to be allocated inside DTCM, then the entire area must be initialize
 
 ### errata `3190818` and `3175626`
 
-Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted infinitely)
+Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted
+infinitely, printing out message with additional garbage)
 
 Particularly fix for `3175626` must be applied as execution from sram won't work without it.
 

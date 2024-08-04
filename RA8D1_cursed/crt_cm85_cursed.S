@@ -1,5 +1,5 @@
 /*****************************************************************************
- * cortex-m85 startup code, temporarily cursed for starting from SRAM, not optimized    *
+ * cortex-m85 startup code, temporarily cursed for RA8 starting from SRAM, not optimized    *
  * Author : Jan Oleksiewicz <jnk0le@hotmail.com>                             *
  * License: CC0                                                              *
  *****************************************************************************/
@@ -38,7 +38,7 @@ Reset_Handler:
 	bne 1b*/
 
 	// initialize entire dtcm to clear out ECC errors (can extend bss)
-	movs r0, #0xdeadbeef
+	ldr r0, =0xdeadbeef
 	ldr r1, =__dtcm_start__
 	ldr r2, =__dtcm_end__
 

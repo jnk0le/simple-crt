@@ -87,6 +87,8 @@ If stack is to be allocated inside DTCM, then the entire area must be initialize
 (precise bus faults), when the code allocates byte or halfword buffers on stack.
 (e.g `printf("test %d", 1234)` is doing that)
 
+ITCM must be initialized by doubleword (8 byte) stores to clear ECC errors.
+
 ### errata `3190818` and `3175626`
 
 Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted
@@ -109,10 +111,6 @@ acccessed by core and DMA when using writeback cache.
 	__DSB();
 	__ISB();
 ```
-
-### other issues
-
-- irq vector table cannot be dispatched from itcm. (init by 64bit for ECC ???)
 
 ## notes
 

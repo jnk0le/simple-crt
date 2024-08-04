@@ -23,19 +23,29 @@ Reset_Handler:
 	// startup from sram is a little messy
 	ldr sp, =__main_stack_end__ // stack
 
+	// initialize entire itcm to clear out ECC errors
+	ldr r0, =0x12345678
+	ldr r4, =0xaabbccdd
+	ldr r1, =__itcm_start__
+	ldr r2, =__itcm_end__
+
+1:	strd r0,r4, [r1], #8
+2:	cmp r1, r2
+	bne 1b
+
 	// load irq handlers to itcm, as the gdb just resumes exec to sram
 	ldr r1, =__isr_vector_table_start__
-	//ldr r2, =__isr_vector_table_end__
-	//ldr r3, =__isr_vector_table_init_start__
+	ldr r2, =__isr_vector_table_end__
+	ldr r3, =__isr_vector_table_init_start__
 
 	ldr r5, =0xE000ED08 // SCB->VTOR
 	str r1, [r5]
 
-	/*b 2f
-1:	ldr r0, [r3], #4
-	str r0, [r1], #4
+	b 2f
+1:	ldrd r0,r4, [r3], #8
+	strd r0,r4, [r1], #8
 2:	cmp r1, r2
-	bne 1b*/
+	bne 1b
 
 	// initialize entire dtcm to clear out ECC errors (can extend bss)
 	ldr r0, =0xdeadbeef

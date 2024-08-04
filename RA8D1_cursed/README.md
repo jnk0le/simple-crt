@@ -80,7 +80,7 @@ On cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have 
 Current startup code enables only FPU/helium.\ 
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
 
-ECC in ITCM and DTCM memories is enabled by default and cannot be disabled by `MEMSYSCTL->{I,D}TCMCR`.
+ECC in ITCM and DTCM memories is enabled by default and cannot be disabled by `MEMSYSCTL->{I,D}TCMCR` enable bits.
 (SRAM ECC is disabled by default)
 
 If stack is to be allocated inside DTCM, then the entire area must be initialized (zeroed) to avoid ECC errors

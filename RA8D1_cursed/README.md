@@ -80,10 +80,16 @@ On cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have 
 Current startup code enables only FPU/helium.\ 
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
 
+ECC in ITCM and DTCM memories is enabled by default and cannot be disabled by `MEMSYSCTL->{I,D}TCMCR`.
+(SRAM ECC is disabled by default)
+
+If stack is to be allocated inside DTCM, then the entire area must be initialized (zeroed) to avoid ECC errors
+(precise bus faults), when the code allocates byte or halfword buffers on stack.
+(e.g `printf("test %d", 1234)` is doing that)
+
 ### errata `3190818` and `3175626`
 
-Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted 3x, with some
-garbage 3rd time, then hardfault)
+Enabling DCACHE (on r0p2 cm85) will result in subsequent crash (e.g. preceding printf reexecuted infinitely)
 
 Particularly fix for `3175626` must be applied as execution from sram won't work without it.
 
@@ -105,13 +111,14 @@ acccessed by core and DMA when using writeback cache.
 
 ### other issues
 
-- irq vector table cannot be dispatched from itcm.
+- irq vector table cannot be dispatched from itcm. (init by 64bit for ECC ???)
 
 ## notes
 
 - expected `$_CPUTAPID` is ignored by openocd, debug session reads `SWD DPIDR 0x6ba02477`
 
-- debugger has issues with reading DTCM/ITCM (all aliases), only disassembler shows something in there
+- if openocd experiences ECC error while reading memory, then the debugger doesn't show anything in there.
+(openocd console will show "Error: Failed to read memory at 0x20000000")
 
 - vector table covers only the standard ARM irqs 
 

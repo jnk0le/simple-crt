@@ -21,8 +21,6 @@
 .balign 4
 Reset_Handler:
 	// startup from sram is a little messy
-
-	//bkpt #0
 	ldr sp, =__main_stack_end__ // stack
 
 	// load irq handlers to itcm, as the gdb just resumes exec to sram
@@ -38,6 +36,15 @@ Reset_Handler:
 	str r0, [r1], #4
 2:	cmp r1, r2
 	bne 1b*/
+
+	// initialize entire dtcm to clear out ECC errors (can extend bss)
+	movs r0, #0xdeadbeef
+	ldr r1, =__dtcm_start__
+	ldr r2, =__dtcm_end__
+
+1:	str r0, [r1], #4
+2:	cmp r1, r2
+	bne 1b
 
 	//copypaste from cm4
 

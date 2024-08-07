@@ -128,3 +128,8 @@ missing it which causes errors.
 
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
 It's missing some bits and many descriptions are exactly inverse of actual behaviour.
+
+- instruction level breakpoints are broken and will prevent any further
+execution (by singlestepping or "continue") when reached. (works at C/C++ level)\
+It is possible to "unlock" by forcing `pc` to next instruction address. The instruction at offending breakpoint 
+will not commit its results. 

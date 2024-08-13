@@ -77,7 +77,7 @@ It is recommended to use "Debug in RAM" option (in eclipse: Debug Configurations
 ## cortex-m85 setup
 
 On cortex-m85 fpu/helium (CP10,CP11), branch predictor, LOB and I/D caches have to be enabled to achieve advertised performance.
-Current startup code enables only FPU/helium.\ 
+Current startup code enables only FPU/helium.\
 https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/armv8_2d00_m-based-processor-software-development-hints-and-tips
 
 ECC in ITCM and DTCM memories is enabled by default and cannot be disabled by `MEMSYSCTL->{I,D}TCMCR` enable bits.

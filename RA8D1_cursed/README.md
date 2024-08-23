@@ -127,7 +127,7 @@ missing it which causes errors.
 - svd files can be extracted from renesas DFP packages
 
 - to debug NVIC registers use `Generic_V8M.svd` file (extracted from https://github.com/ARM-software/CMSIS_5/issues/844#issuecomment-1217164658)
-It's missing some bits and many descriptions are exactly inverse of actual behaviour.
+It's missing some bits and many descriptions are of course, an exact inverse of actual behaviour.
 
 - instruction level breakpoints, and C level breakpoints outside main(), are broken and will prevent any further
 execution (by singlestepping or "continue") when reached. ~(works at C/C++ level)~\

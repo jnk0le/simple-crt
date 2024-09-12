@@ -20,8 +20,7 @@ After resetting you need to hold BOOT key until connected by the tool.\
 If you have already created "project" then connection is established by selecting operations like
 flashing (start button) or reading device information etc.
 
-First step is to libarate the uC from any present applications (e.g. RT-Thread vision board has such)
-and reset it to factory default.\
+First step is to libarate the uC from any present applications and reset it to factory default.\
 Otherwise your application/debugging will freeze, usually at `main()`
 breakpoint or enter undebuggable hardfault.
 

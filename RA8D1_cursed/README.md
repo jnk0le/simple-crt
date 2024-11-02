@@ -21,12 +21,11 @@ If you have already created "project" then connection is established by selectin
 flashing (start button) or reading device information etc.
 
 First step is to libarate the uC from any present applications and reset it to factory default.\
-Otherwise your application/debugging will freeze, usually at `main()`
-breakpoint or enter undebuggable hardfault.
+Otherwise your application/debugging will freeze or enter undebuggable hardfault.
 
 To do this you need to select "Initialize Device" in "Target Device" menu
 
-Now device is in fatory state in which the debugging is (of course) not possible.\
+Now device is in factory state in which the debugging is (of course) not possible.\
 To unbrick, flash in the `RA8_factory_unbrick.hex` file using the same tool.
 
 ## IDAU

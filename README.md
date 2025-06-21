@@ -12,10 +12,10 @@ for use with
 --specs=nosys.specs
 ```
 
-`-nostdlib`/`-nodefaultlibs` is not required. Bloat will be pulled only when appropriate "standard" function is used. 
+`-nostdlib`/`-nodefaultlibs` is not required. Bloat will be pulled only when appropriate standard function is used. 
 (adding compiler option to use float with newlib printf/scanf will casue bloat even when printf/scanf is not used)
 
-Device headers can be ripped from e.g. vendor generators or CMSIS packs available to download in eclispe iot.
+Device headers can be ripped from e.g. vendor generators or CMSIS packs available to download in eclispe "CMSIS packs".
 
 To define different stack/heap limitations
 ```

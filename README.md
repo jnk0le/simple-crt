@@ -27,7 +27,7 @@ note that space "reserved" for stack/heap is counted as used by variables.
 To disable c++ static initialization
 `__CRT_NO_STATIC_INITIALIZERS` have to be globally (or at last within crt files) defined through
 compiler flags (project preporties -> preprocessor -> defined symbols (-D))
-`__CRT_NORETURN_FROM_MAIN` will remove deinitialiation only.
+`__CRT_NORETURN_FROM_MAIN` will remove deinitialiation only.\
 Those macros will not remove constructors/destructors and init/fini arrays (have to be KEEPt in linker
 to work at all when used)
 

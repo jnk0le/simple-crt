@@ -136,6 +136,7 @@ missing it which causes errors.
 It's missing some bits and many descriptions are of course, an exact inverse of actual behaviour.
 
 - instruction level breakpoints, and C level breakpoints outside main(), are broken and will prevent any further
-execution (by singlestepping or "continue") when reached. ~(works at C/C++ level)~\
+execution (by singlestepping or "continue") when reached.\
 It is possible to "unlock" by forcing `pc` to next instruction address. The instruction at offending breakpoint 
-will not commit its results. 
+will not commit its results.\
+Only `bkpt #0` (`__BKPT();`) instruction works as expected.

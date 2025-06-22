@@ -139,4 +139,4 @@ It's missing some bits and many descriptions are of course, an exact inverse of 
 execution (by singlestepping or "continue") when reached.\
 It is possible to "unlock" by forcing `pc` to next instruction address. The instruction at offending breakpoint 
 will not commit its results.\
-Only `bkpt #0` (`__BKPT();`) instruction works as expected.
+Only `bkpt #0` (available as `__BKPT()`) instruction works as expected.

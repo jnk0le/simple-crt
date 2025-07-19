@@ -44,7 +44,7 @@ Any change in linker scripts has to be followed by project clean and modifying a
 
 ### semihosting
 
-Implemented according to the spec: https://developer.arm.com/documentation/100863/0300/
+Implemented according to the spec: https://developer.arm.com/documentation/dui0471/i/semihosting/semihosting-operations?lang=en
 
 To use semihosting, it must be enabled in gdb by `monitor arm semihosting enable`
 or "enable arm semihosting" option in eclipse debug startup configuration

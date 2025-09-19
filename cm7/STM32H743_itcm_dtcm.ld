@@ -4,6 +4,17 @@
  * License: CC0                                                              *
  *****************************************************************************/
 
+/*
+	uses minimal vector table for startup and catching hardfault/nmi
+	actual vector table is placed in ITCM, startup code must initialize it (including VTOR)
+	critical routines can be placed in .itcm.text
+	.data and .bss are placed in DTCM
+	buffers can be allocated in D1, D2, D3 by ".Dx.noinit" sections
+	heap is placed in D1
+	stack is placed in DTCM
+	no support for initialized sections in multiple memory banks (except ITCM)
+*/
+
 OUTPUT_FORMAT("elf32-littlearm");
 OUTPUT_ARCH(arm);
 
@@ -61,25 +72,22 @@ __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 4096;
 
 SECTIONS
 {
-	.isr_vector_table : ALIGN(8) {
-		__isr_vector_table_start__ = .;
-		KEEP(*(.isr_vector_table))
-		. = ALIGN(8); /* will copy it by 8 bytes per round */
-		__isr_vector_table_end__ = .;
-	} > FLASH
-
 	.text : ALIGN(4) {
 		__text_start__ = .;
+		KEEP(*(.startup_vector)) /* minimal startup vector to catch hardfault/nmi */
 		*(.text .text.* .gnu.linkonce.t.*)
+		. = ALIGN(4);
 		__text_end__ = .;
 	} > FLASH
 
 	.rodata : ALIGN(4) {
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
+		. = ALIGN(4);
 	} > FLASH
 
 	.data : ALIGN(8) {
 		__data_start__ = .;
+		*(.dtcm.data .dtcm.data.*)
 		*(.data .data.* .gnu.linkonce.d.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		__data_end__ = .;
@@ -88,17 +96,9 @@ SECTIONS
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
 
-	/* allocate space for vector table that needs to be
-	   copied and relocated (VTOR offset) by software */
-	.itcm_isr_vectors (NOLOAD) : ALIGN(8) {
-		__itcm_isr_vector_table_start__ = .;
-		. += (__isr_vector_table_end__ - __isr_vector_table_start__);
-		. = ALIGN(8); /* will copy it by 8 bytes per round */
-		__itcm_isr_vector_table_end__ = .;
-	} > ITCM
-
 	.itcm_text : ALIGN(8) {
 		__itcm_text_start__ = .;
+		KEEP(*(.isr_vector_table))
 		*(.itcm.text .itcm.text.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		__itcm_text_end__ = .;
@@ -115,18 +115,19 @@ SECTIONS
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
 
-		__fini_array_start = .;
- 		KEEP(*(SORT(.fini_array*)))
-		__fini_array_end = .;
-
 		*(vtable)
 		*(.ARM.extab* .gnu.linkonce.armextab*)
 		*(.ARM.exidx* .gnu.linkonce.armexidx*)
 		*(.eh_frame*)
 	} > FLASH
 
+	/DISCARD/ : {
+		.fini_array*
+	}
+
 	.bss : ALIGN(8) {
 		__bss_start__ = .;
+		*(.dtcm.bss .dtcm.bss.*)
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
 		. = ALIGN(8); /* will clear it by 8 bytes per round */
@@ -137,7 +138,9 @@ SECTIONS
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		__noinit_start__ = .;
+		*(.dtcm.noinit .dtcm.noint*)
 		*(.noinit .noint*)
+		. = ALIGN(4);
 		__noinit_end__ = .;
 	} > DTCM
 
@@ -146,12 +149,13 @@ SECTIONS
 	} > DTCM
 
 	__main_stack_end__ = __dtcm_end__;
-	
+
 	ASSERT((__main_stack_start__ + __min_stack_size__) <= __dtcm_end__, "not enough space for stack")
 
 	.D1_noinit (NOLOAD) : ALIGN(4) {
 		__d1_noinit_start__ = .;
 		*(.D1.noinit .D1.noinit*)
+		. = ALIGN(4);
 		__d1_noinit_end__ = .;
 	} > SRAM_D1
 
@@ -166,18 +170,21 @@ SECTIONS
 	.D2_noinit (NOLOAD) : ALIGN(4) {
 		__d2_noinit_start__ = .;
 		*(.D2.noinit .D2.noinit.*)
+		. = ALIGN(4);
 		__d2_noinit_end__ = .;
 	} > SRAM_D2
 
 	.D3_noinit (NOLOAD) : ALIGN(4) {
 		__d3_noinit_start__ = .;
 		*(.D3.noinit .D3.noinit.*)
+		. = ALIGN(4);
 		__d3_noinit_end__ = .;
 	} > SRAM_D3
 
 	.bkp_noinit (NOLOAD) : ALIGN(4) {
 		__bkp_noinit_start__ = .;
 		*(.bkp.noinit .bkp.noinit.*)
+		. = ALIGN(4);
 		__bkp_noinit_end__ = .;
 	} > SRAM_BCKUP
 }

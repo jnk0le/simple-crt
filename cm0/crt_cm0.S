@@ -9,7 +9,6 @@
 // - .bss is right after .data in RAM
 // - .preinit_array is right after .data LMA in FLASH
 // - .init_array is right after .preinit_array
-// - .fini_array is right after .init_array
 
 .syntax unified
 .thumb
@@ -22,7 +21,6 @@
 	// r4 - .bss final condition
 	// r5 - LMA data
 	// r6 - final cond for static initializers
-	// r7 - final cond for static deinitializers
 
 .thumb_func
 .global Reset_Handler
@@ -33,11 +31,7 @@ Reset_Handler:
 #if defined(__CRT_NO_STATIC_INITIALIZERS)
 	ldmia r0!, {r2-r5}
 #else
-	#if defined(__CRT_NORETURN_FROM_MAIN)
-		ldmia r0!, {r2-r6}
-	#else
-		ldmia r0!, {r2-r7}
-	#endif
+	ldmia r0!, {r2-r6}
 #endif
 
 	b 2f // need to skip in case of empty section
@@ -63,17 +57,7 @@ Reset_Handler:
 
 	bl main
 
-#if !defined(__CRT_NORETURN_FROM_MAIN)
-	// main returned, r5, r7 are preserved
-
-	b 2f // need to skip in case of empty section
-1:	ldmia r5!, {r0}
-	blx r0
-2:	cmp r5, r7
-	bne 1b
-
 	b .
-#endif
 
 .balign 4
 mem_init_symbols:
@@ -83,7 +67,4 @@ mem_init_symbols:
 	.long __data_init_start__ // r5
 #if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	.long __init_array_end // r6
-#if !defined(__CRT_NORETURN_FROM_MAIN)
-	.long __fini_array_end // r7
-#endif
 #endif

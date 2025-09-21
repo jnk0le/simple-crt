@@ -19,7 +19,6 @@
 // - ITCM is fixed at 0x00000000
 // - DTCM is fixed at 0x20000000
 // - .itcm.text and .dtcm.data start at beginning of ITCM/DTCM
-// - main() is not expected to return
 
 .syntax unified
 .thumb

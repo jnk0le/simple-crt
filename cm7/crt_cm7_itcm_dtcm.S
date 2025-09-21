@@ -15,7 +15,6 @@
 // - .fini_array is right after .init_array
 // - data/bss SRAM and ITCM are enabled from reset
 // - ITCM is fixed at 0x00000000
-// - main() is not expected to return
 
 .syntax unified
 .thumb

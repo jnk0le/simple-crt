@@ -28,20 +28,14 @@ __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 0;
 
 SECTIONS
 {
-	.isr_vector_table : ALIGN(4) {
-		__isr_vector_table_start__ = .;
+	.text : ALIGN(4) {
+		__text_start__ = .;
 		KEEP(*(.isr_vector_table))
-		__isr_vector_table_end__ = .;
-	} > FLASH
-
-	/* FLASH starts at 0, so put rodata here to allow pure imm12 addressing */
-	.rodata : ALIGN(4) {
+		. = ALIGN(4);
+		/* FLASH starts at 0, so put rodata here to allow pure imm12 addressing */
 		*(.srodata .srodata.*)
 		*(.rodata .rodata.* .gnu.linkonce.r.*) 
-	} > FLASH
-
-	.text : ALIGN(2) {
-		__text_start__ = .;
+		. = ALIGN(2);
 		*(.text .text.* .gnu.linkonce.t.*)
 		__text_end__ = .;
 	} > FLASH
@@ -67,13 +61,13 @@ SECTIONS
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
 
-		/*__fini_array_start = .;
- 		KEEP(*(SORT(.fini_array*)))
-		__fini_array_end = .;*/
-
 		*(vtable)
 		*(.eh_frame*)
 	} > FLASH
+
+	/DISCARD/ : {
+		.fini_array*
+	}
 
  	.bss : ALIGN(4) {
 		__bss_start__ = .;
@@ -84,10 +78,11 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
+	__bss_size__ = SIZEOF(.bss);
+	
 	/* there is only 2KiB of SRAM so we can load it in a single c.mv this way */
  	__global_pointer$ = __bss_end__;
-	__bss_size__ = SIZEOF(.bss);
-
+	
 	.noinit (NOLOAD) : ALIGN(4) {
 		__noinit_start__ = .;
 		*(.noinit .noinit.*)

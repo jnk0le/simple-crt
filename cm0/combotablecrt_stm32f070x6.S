@@ -40,7 +40,6 @@ __irq_vector_table:
 	ldr r4, bss_end
 	movs r0, #0
 
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	ldr r6, init_array_end
 	b 3f // branch to cmp first, bss init fits into 8B space
 
@@ -50,18 +49,6 @@ __irq_vector_table:
 	bne 6b
 
 	bl main
-#else
-	b 3f // branch to cmp first, bss init fits into 8B space
-
-5:	bl main
-
-	//padding
-	b .
-	nop
-	nop
-	nop
-	nop
-#endif
 
 	.long SVC_Handler
 
@@ -141,7 +128,6 @@ bss_end:
 	.long SPI1_IRQHandler
 
 	// 4 bytes available here // SPI2_IRQHandler on x8
-
 .thumb_func
 Default_Handler:
 	bkpt #0

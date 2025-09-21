@@ -28,14 +28,9 @@ __min_heap_size__ = DEFINED(__min_heap_size__) ? __min_heap_size__ : 0;
 
 SECTIONS
 {
-	.isr_vector_table : ALIGN(4) {
-		__isr_vector_table_start__ = .;
-		KEEP(*(.isr_vector_table))
-		__isr_vector_table_end__ = .;
-	} > FLASH
-
 	.text : ALIGN(4) {
 		__text_start__ = .;
+		KEEP(*(.isr_vector_table))
 		*(.text .text.* .gnu.linkonce.t.*)
 		__text_end__ = .;
 	} > FLASH
@@ -63,15 +58,15 @@ SECTIONS
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
 
-		__fini_array_start = .;
- 		KEEP(*(SORT(.fini_array*)))
-		__fini_array_end = .;
-
 		*(vtable)
 		*(.ARM.extab* .gnu.linkonce.armextab*)
 		*(.ARM.exidx* .gnu.linkonce.armexidx*)
 		*(.eh_frame*)
 	} > FLASH
+
+	/DISCARD/ : {
+		.fini_array*
+	}
 
 	.bss : ALIGN(4) {
 		__bss_start__ = .;

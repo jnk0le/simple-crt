@@ -9,7 +9,6 @@
 // - .bss is right after .data in RAM
 // - .preinit_array is right after .data LMA in FLASH
 // - .init_array is right after .preinit_array
-// - main() doesn't return
 
 .syntax unified
 .thumb
@@ -39,8 +38,6 @@ __irq_vector_table:
 
 	movs r0, #0
 	b 3f // branch to cmp first, bss init fits into 8B space
-	
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 
 6:	ldmia r5!, {r0}
 	blx r0
@@ -49,20 +46,8 @@ __irq_vector_table:
 	
 	bl main
 	
-	// padding
 	b .
-	nop
-#else
-5:	bl main
-	
-	// padding
-	b .
-	nop
-	nop
-	nop
-	nop
-	nop
-#endif
+	nop // padding
 
 	.long SVC_Handler
 
@@ -72,13 +57,8 @@ __irq_vector_table:
 Reset_Handler:
 	adr r0, mem_init_symbols
 	ldmia r0!, {r2,r3,r4,r5}
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 	ldr r6, init_array_end
 	b 2b
-#else
-	b 2b // branch to cmp first and escape from scattered space
-	nop // padding
-#endif
 
 	.long PendSV_Handler
 	.long SysTick_Handler
@@ -108,12 +88,8 @@ Reset_Handler:
 	
 	// 4 bytes available here
 .balign 4
-#if !defined(__CRT_NO_STATIC_INITIALIZERS)
 init_array_end:
 	.long __init_array_end
-#else
-	.long 0
-#endif
 	
 	.long TIM2_IRQHandler
 

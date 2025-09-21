@@ -100,6 +100,7 @@ SECTIONS
 		__itcm_text_start__ = .;
 		KEEP(*(.isr_vector_table))
 		*(.itcm.text .itcm.text.*)
+		*(.ramfunc .ramfunc.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		__itcm_text_end__ = .;
 	} > ITCM AT > FLASH

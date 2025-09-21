@@ -98,6 +98,7 @@ SECTIONS
 	.dtcm_data : ALIGN(8) {
 		__dtcm_data_start__ = .;
 		*(.dtcm.data .dtcm.data.*)
+		*(.ramfunc .ramfunc.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
 		__dtcm_data_end__ = .;
 	} > DTCM AT > FLASH

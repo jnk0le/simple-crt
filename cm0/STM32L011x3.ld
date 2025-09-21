@@ -48,6 +48,7 @@ SECTIONS
 	/* .data LMA must be placed before before static constructors */
 	.data : ALIGN(4) {
 		__data_start__ = .;
+		*(.ramfunc .ramfunc.*)
 		*(.data .data.* .gnu.linkonce.d.*)
 		. = ALIGN(4);
 		__data_end__ = .;

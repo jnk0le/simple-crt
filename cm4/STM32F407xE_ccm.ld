@@ -100,6 +100,7 @@ SECTIONS
 	/*.ram_data : ALIGN(4) {
 		__ram_data_start__ = .;
 		*(.ram.data .ram.data.*)
+		*(.ramfunc .ramfunc.*)
 		. = ALIGN(4);
 		__ram_data_end__ = .;
 	} > RAM AT > FLASH

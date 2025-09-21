@@ -63,14 +63,14 @@ SECTIONS
 		__init_array_end = .;
 
 		*(vtable)
-		*(.eh_frame*)
 	} > FLASH
 
 	/DISCARD/ : {
 		.fini_array*
+		*(.eh_frame*)
 	}
 
- 	.bss : ALIGN(4) {
+ 	.bss (NOLOAD) : ALIGN(4) {
 		__bss_start__ = .;
 		*(.sbss .sbss.* .gnu.linkonce.sb.*)
 		*(.bss .bss.* .gnu.linkonce.b.*)

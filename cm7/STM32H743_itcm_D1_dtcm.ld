@@ -76,13 +76,8 @@ SECTIONS
 		__text_start__ = .;
 		KEEP(*(.startup_vector)) /* minimal startup vector to catch hardfault/nmi */
 		*(.text .text.* .gnu.linkonce.t.*)
-		. = ALIGN(4);
-		__text_end__ = .;
-	} > FLASH
-
-	.rodata : ALIGN(4) {
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
-		. = ALIGN(4);
+		__text_end__ = .;
 	} > FLASH
 
 	.data : ALIGN(8) {
@@ -94,7 +89,7 @@ SECTIONS
 
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
-
+	
 	.dtcm_data : ALIGN(8) {
 		__dtcm_data_start__ = .;
 		*(.dtcm.data .dtcm.data.*)
@@ -114,6 +109,7 @@ SECTIONS
 		__itcm_text_end__ = .;
 	} > ITCM AT > FLASH
 
+	__itcm_text_size__ = SIZEOF(.itcm_text);
 	__itcm_text_init_start__ = LOADADDR(.itcm_text);
 
 	.tables : ALIGN(4) {
@@ -126,16 +122,16 @@ SECTIONS
 		__init_array_end = .;
 
 		*(vtable)
-		*(.ARM.extab* .gnu.linkonce.armextab*)
-		*(.ARM.exidx* .gnu.linkonce.armexidx*)
-		*(.eh_frame*)
 	} > FLASH
 
 	/DISCARD/ : {
 		.fini_array*
+		*(.ARM.extab* .gnu.linkonce.armextab*)
+		*(.ARM.exidx* .gnu.linkonce.armexidx*)
+		*(.eh_frame*)
 	}
 
-	.bss : ALIGN(8) {
+	.bss (NOLOAD) : ALIGN(8) {
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
@@ -145,7 +141,7 @@ SECTIONS
 
 	__bss_size__ = SIZEOF(.bss);
 
-	.dtcm_bss : ALIGN(8) {
+	.dtcm_bss (NOLOAD) : ALIGN(8) {
 		__dtcm_bss_start__ = .;
 		*(.dtcm.bss .dtcm.bss.*)
 		. = ALIGN(8); /* will clear it by 8 bytes per round */

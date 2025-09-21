@@ -43,11 +43,8 @@ SECTIONS
 		__text_start__ = .;
 		KEEP(*(.isr_vector_table))
 		*(.text .text.* .gnu.linkonce.t.*)
-		__text_end__ = .;
-	} > FLASH
-
-	.rodata : ALIGN(4) {
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
+		__text_end__ = .;
 	} > FLASH
 
 	.data : ALIGN(4) {
@@ -71,16 +68,16 @@ SECTIONS
 		__init_array_end = .;
 
 		*(vtable)
-		*(.ARM.extab* .gnu.linkonce.armextab*)
-		*(.ARM.exidx* .gnu.linkonce.armexidx*)
-		*(.eh_frame*)
 	} > FLASH
 
 	/DISCARD/ : {
 		.fini_array*
+		*(.ARM.extab* .gnu.linkonce.armextab*)
+		*(.ARM.exidx* .gnu.linkonce.armexidx*)
+		*(.eh_frame*)
 	}
 
-	.bss : ALIGN(4) {
+	.bss (NOLOAD) : ALIGN(4) {
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)

@@ -77,10 +77,13 @@ SECTIONS
 		KEEP(*(.startup_vector)) /* minimal startup vector to catch hardfault/nmi */
 		*(.text .text.* .gnu.linkonce.t.*)
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
+		. = ALIGN(4); 		
+		*(vtable)
+		. = ALIGN(8); /* must align to keep .data LMA 8 byte aligned */
 		__text_end__ = .;
 	} > FLASH
 
-	.data : ALIGN(8) {
+	.data : ALIGN_WITH_INPUT {
 		__data_start__ = .;
 		*(.data .data.* .gnu.linkonce.d.*)
 		. = ALIGN(8); /* will copy it by 8 bytes per round */
@@ -90,7 +93,8 @@ SECTIONS
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
 	
-	.dtcm_data : ALIGN(8) {
+	/* .data LMA was 8 byte aligned */
+	.dtcm_data : ALIGN_WITH_INPUT {
 		__dtcm_data_start__ = .;
 		*(.dtcm.data .dtcm.data.*)
 		*(.ramfunc .ramfunc.*)
@@ -101,7 +105,8 @@ SECTIONS
 	__dtcm_data_size__ = SIZEOF(.dtcm_data);
 	__dtcm_data_init_start__ = LOADADDR(.dtcm_data);
 
-	.itcm_text : ALIGN(8) {
+	/* .dtcm_data LMA was 8 byte aligned */
+	.itcm_text : ALIGN_WITH_INPUT {
 		__itcm_text_start__ = .;
 		KEEP(*(.isr_vector_table))
 		*(.itcm.text .itcm.text.*)
@@ -112,7 +117,8 @@ SECTIONS
 	__itcm_text_size__ = SIZEOF(.itcm_text);
 	__itcm_text_init_start__ = LOADADDR(.itcm_text);
 
-	.tables : ALIGN(4) {
+	/* .itcm_text LMA was 8 byte aligned */
+	.init_tables : ALIGN(4) {
 		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*)))
 		__preinit_array_end = .;
@@ -120,18 +126,11 @@ SECTIONS
 		__init_array_start = .;
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
-
-		*(vtable)
 	} > FLASH
 
-	/DISCARD/ : {
-		.fini_array*
-		*(.ARM.extab* .gnu.linkonce.armextab*)
-		*(.ARM.exidx* .gnu.linkonce.armexidx*)
-		*(.eh_frame*)
-	}
-
-	.bss (NOLOAD) : ALIGN(8) {
+	/* .data was 8 byte aligned */
+	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
+	.bss (__data_end__) (NOLOAD) : ALIGN(8) {
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
@@ -141,7 +140,9 @@ SECTIONS
 
 	__bss_size__ = SIZEOF(.bss);
 
-	.dtcm_bss (NOLOAD) : ALIGN(8) {
+	/* .dtcm_data was 8 byte aligned */
+	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
+	.dtcm_bss (__data_end__) (NOLOAD) : ALIGN(8) {
 		__dtcm_bss_start__ = .;
 		*(.dtcm.bss .dtcm.bss.*)
 		. = ALIGN(8); /* will clear it by 8 bytes per round */
@@ -201,4 +202,11 @@ SECTIONS
 		. = ALIGN(4);
 		__bkp_noinit_end__ = .;
 	} > SRAM_BCKUP
+
+	/DISCARD/ : {
+		.fini_array*
+		*(.ARM.extab* .gnu.linkonce.armextab*)
+		*(.ARM.exidx* .gnu.linkonce.armexidx*)
+		*(.eh_frame*)
+	}
 }

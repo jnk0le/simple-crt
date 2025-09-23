@@ -118,7 +118,6 @@ SECTIONS
 		__init_array_end = .;
 	} > FLASH
 
-	/* .data was 8 byte aligned */
 	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
 	.bss (__data_end__) (NOLOAD) : ALIGN(8) {
 		__bss_start__ = .;

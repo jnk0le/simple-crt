@@ -128,7 +128,6 @@ SECTIONS
 		__init_array_end = .;
 	} > FLASH
 
-	/* .data was 8 byte aligned */
 	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
 	.bss (__data_end__) (NOLOAD) : ALIGN(8) {
 		__bss_start__ = .;
@@ -140,9 +139,8 @@ SECTIONS
 
 	__bss_size__ = SIZEOF(.bss);
 
-	/* .dtcm_data was 8 byte aligned */
 	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
-	.dtcm_bss (__data_end__) (NOLOAD) : ALIGN(8) {
+	.dtcm_bss (__dtcm_data_end__) (NOLOAD) : ALIGN(8) {
 		__dtcm_bss_start__ = .;
 		*(.dtcm.bss .dtcm.bss.*)
 		. = ALIGN(8); /* will clear it by 8 bytes per round */

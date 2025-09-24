@@ -93,8 +93,7 @@ SECTIONS
 
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
-
-	/* .data LMA was 8 byte aligned */
+	
 	.itcm_text : ALIGN_WITH_INPUT {
 		__itcm_text_start__ = .;
 		KEEP(*(.isr_vector_table))
@@ -107,7 +106,6 @@ SECTIONS
 	__itcm_text_size__ = SIZEOF(.itcm_text);
 	__itcm_text_init_start__ = LOADADDR(.itcm_text);
 
-	/* .itcm_text LMA was 8 byte aligned */
 	.init_tables : ALIGN_WITH_INPUT {
 		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*)))

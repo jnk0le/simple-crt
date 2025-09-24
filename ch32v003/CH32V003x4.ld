@@ -37,11 +37,13 @@ SECTIONS
 		*(.rodata .rodata.* .gnu.linkonce.r.*) 
 		. = ALIGN(2);
 		*(.text .text.* .gnu.linkonce.t.*)
+		. = ALIGN(4); 
+		*(vtable)
+		. = ALIGN(4); /* must align to keep .data LMA 4 byte aligned */
 		__text_end__ = .;
 	} > FLASH
 
-	/* .data LMA must be placed before before static constructors */
-	.data : ALIGN(4) {
+	.data : ALIGN_WITH_INPUT {
 		__data_start__ = .;
 		*(.ramfunc .ramfunc.*)
 		*(.data .data.* .gnu.linkonce.d.*)
@@ -53,7 +55,7 @@ SECTIONS
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
 
-	.tables : ALIGN(4) {
+	.init_tables : ALIGN_WITH_INPUT {
 		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*))) 
 		__preinit_array_end = .;
@@ -61,16 +63,10 @@ SECTIONS
 		__init_array_start = .;
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
-
-		*(vtable)
 	} > FLASH
 
-	/DISCARD/ : {
-		.fini_array*
-		*(.eh_frame*)
-	}
-
- 	.bss (NOLOAD) : ALIGN(4) {
+	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
+ 	.bss (__data_end__) (NOLOAD) : ALIGN(4) {
 		__bss_start__ = .;
 		*(.sbss .sbss.* .gnu.linkonce.sb.*)
 		*(.bss .bss.* .gnu.linkonce.b.*)
@@ -102,4 +98,9 @@ SECTIONS
 	__ch32v003_bsstostack_offset__ = ((__data_size__ + __bss_size__) == 0 ) ? 2044 : (__main_stack_end__ - __bss_end__);
 
 	ASSERT((__heap_start__ + __min_heap_size__ + __min_stack_size__) <= __ram_end__, "not enough space for heap and stack")
+
+	/DISCARD/ : {
+		.fini_array*
+		*(.eh_frame*)
+	}
 }

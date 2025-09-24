@@ -44,10 +44,13 @@ SECTIONS
 		KEEP(*(.isr_vector_table))
 		*(.text .text.* .gnu.linkonce.t.*)
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
+		. = ALIGN(4); 
+		*(vtable)
+		. = ALIGN(4); /* must align to keep .data LMA 4 byte aligned */
 		__text_end__ = .;
 	} > FLASH
 
-	.data : ALIGN(4) {
+	.data : ALIGN_WITH_INPUT {
 		__data_start__ = .;
 		*(.data* .data.* .gnu.linkonce.d.*)
 		. = ALIGN(4);
@@ -57,7 +60,7 @@ SECTIONS
 	__data_size__ = SIZEOF(.data);
 	__data_init_start__ = LOADADDR(.data);
 
-	.tables : ALIGN(4) {
+	.init_tables : ALIGN_WITH_INPUT {
 		__preinit_array_start = .;
 		KEEP(*(SORT(.preinit_array*)))
 		__preinit_array_end = .;
@@ -65,18 +68,10 @@ SECTIONS
 		__init_array_start = .;
 		KEEP(*(SORT(.init_array*)))
 		__init_array_end = .;
-
-		*(vtable)
 	} > FLASH
 
-	/DISCARD/ : {
-		.fini_array*
-		*(.ARM.extab* .gnu.linkonce.armextab*)
-		*(.ARM.exidx* .gnu.linkonce.armexidx*)
-		*(.eh_frame*)
-	}
-
-	.bss (NOLOAD) : ALIGN(4) {
+	/* ALIGN_WITH_INPUT doesn't work here, but starting address can be forced to the data end symbol */
+	.bss (__data_end__) (NOLOAD) : ALIGN(4) {
 		__bss_start__ = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON)
@@ -93,24 +88,6 @@ SECTIONS
 	} > CCM
 
 	__heap_end__ = __ram_end__;
-
-	/*.ram_data : ALIGN(4) {
-		__ram_data_start__ = .;
-		*(.ram.data .ram.data.*)
-		*(.ramfunc .ramfunc.*)
-		. = ALIGN(4);
-		__ram_data_end__ = .;
-	} > RAM AT > FLASH
-	
-	__ram_data_init_start__ = LOADADDR(.data);
-	
-	.ram_bss (NOLOAD) : ALIGN(4) {
-		__ram_bss_start__ = .;
-		*(.ram.bss .ram.bss.*)
-		. = ALIGN(4);
-		__ram_bss_end__ = .;
-	} > RAM
-	*/
 
 	.ram_noinit (NOLOAD) : ALIGN(4) {
 		__ram_noinit_start__ = .;
@@ -139,4 +116,11 @@ SECTIONS
 		*(.bkp.noinit .bkp.noinit.*)
 		__bkp_noinit_end__ = .;
 	} > SRAM_BCKUP
+
+	/DISCARD/ : {
+		.fini_array*
+		*(.ARM.extab* .gnu.linkonce.armextab*)
+		*(.ARM.exidx* .gnu.linkonce.armexidx*)
+		*(.eh_frame*)
+	}
 }

@@ -118,6 +118,7 @@ bss_end:
 
 	// 4 bytes available here // I2C2_IRQHandler on x8
 .balign 4
+init_array_end:
 	.long __init_array_end
 
 	.long SPI1_IRQHandler

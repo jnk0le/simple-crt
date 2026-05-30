@@ -1,8 +1,9 @@
 board scripts for stlink v2 clone
 ![stlinkv2](stlinkv2.jpg)
 
+Default nucleo scripts expect rst pin to work, which is not the case for those clones.
 
-default scripts expect rst pin to work, which is not the case for those clones.
+Around 0.12.0-somethig version openocd changed stlink script directives, `*_oldocd.cfg` contains the older ones.
 
 
 use with openocd ("config options" in eclipse)
